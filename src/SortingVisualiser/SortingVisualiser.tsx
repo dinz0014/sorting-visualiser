@@ -41,3 +41,28 @@ export default class SortingVisualiser extends React.Component<
         const width = window.innerWidth;
         this.setState({ array, width });
     }
+
+    render(): React.ReactNode {
+        const { array, width } = this.state;
+        const barWidth = 0.7 * ((width * 0.7) / this.props.size - 1);
+        const leftMarg = width * 0.15;
+        const containerWidth = (barWidth + 1) * this.props.size;
+        console.log(this.props.size);
+
+        return (
+            <div className="array-container" style={{ left: `${leftMarg}px` }}>
+                {array.map((value, idx) => {
+                    return (
+                        <div
+                            className="array-bar"
+                            key={idx}
+                            style={{
+                                width: `${barWidth}px`,
+                                height: `${0.85 * value}px`
+                            }}></div>
+                    );
+                })}
+            </div>
+        );
+    }
+}
