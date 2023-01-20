@@ -8,3 +8,8 @@ export type sortVizState = {
     array: number[];
     width: number;
 };
+
+export type animation = {
+    firstIdx: number;
+    secondIdx: number;
+};
