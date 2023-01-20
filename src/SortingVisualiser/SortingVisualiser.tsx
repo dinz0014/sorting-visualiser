@@ -7,10 +7,12 @@ import {
 } from '../types/sortVisualiserTypes';
 import './SortingVisualiser.css';
 
+// Main component class for Sorting Visualiser
 export default class SortingVisualiser extends React.Component<
     sortVizProps,
     sortVizState
 > {
+    // Default properties. TODO: Pull these from a config file of sorts
     static defaultProps = {
         size: 200,
         min: 10,
@@ -18,7 +20,9 @@ export default class SortingVisualiser extends React.Component<
         width: window.innerWidth
     };
 
-    static ANIMATION_TIME = 1;
+    static ANIMATION_TIME = 3;
+
+    // Constructor
     constructor(props: sortVizProps) {
         super(props);
 
@@ -27,14 +31,17 @@ export default class SortingVisualiser extends React.Component<
         };
     }
 
+    // Generate the array bars once component mounts
     componentDidMount(): void {
         this.generateArray();
     }
 
+    // Utility function to get a random integer between two numbers (inclusive)
     randomNumBetween(start: number, end: number): number {
         return Math.floor(Math.random() * (end - start + 1) + start);
     }
 
+    // Generates the array of random numbers to be sorted
     generateArray(): void {
         const array: number[] = [];
 
@@ -45,6 +52,7 @@ export default class SortingVisualiser extends React.Component<
         this.setState({ array });
     }
 
+    // Visualises the execution of selection sort
     visualiseSelectionSort(): void {
         const animations = getSelectionSortAnimations(this.state.array);
 
@@ -77,13 +85,15 @@ export default class SortingVisualiser extends React.Component<
         }
     }
 
+    // Renders the component to be viewed
     render(): React.ReactNode {
+        // Calculates margins and bar width
         const { array } = this.state;
         const width = this.props.width;
         const barWidth = 0.7 * ((width * 0.7) / this.props.size - 1);
         const marg = width * 0.15;
-        const containerWidth = (barWidth + 1) * this.props.size;
 
+        // Renders the array bars and sets their relevant style attributes
         return (
             <>
                 <div>
