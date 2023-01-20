@@ -68,13 +68,13 @@ export default class SortingVisualiser extends React.Component<
 
             if (type === animationType.ComparisonOn) {
                 setTimeout(() => {
-                    firstStyle.backgroundColor = 'red';
-                    secondStyle.backgroundColor = 'red';
+                    firstStyle.backgroundColor = comparisonBar;
+                    secondStyle.backgroundColor = comparisonBar;
                 }, i * SortingVisualiser.ANIMATION_TIME);
             } else if (type === animationType.ComparisonOff) {
                 setTimeout(() => {
-                    firstStyle.backgroundColor = '#0394fc';
-                    secondStyle.backgroundColor = '#0394fc';
+                    firstStyle.backgroundColor = defaultBar;
+                    secondStyle.backgroundColor = defaultBar;
                 }, i * SortingVisualiser.ANIMATION_TIME);
             } else {
                 setTimeout(() => {
@@ -90,13 +90,13 @@ export default class SortingVisualiser extends React.Component<
         // Calculates margins and bar width
         const { array } = this.state;
         const width = this.props.width;
-        const barWidth = 0.7 * ((width * 0.7) / this.props.size - 1);
-        const marg = width * 0.15;
+        const barWidth = 0.7 * ((width * 0.8) / this.props.size - 1);
+        const marg = width * 0.1;
 
         // Renders the array bars and sets their relevant style attributes
         return (
-            <>
-                <div>
+            <div style={{ backgroundColor: siteBackground }}>
+                <div style={{ backgroundColor: siteBackground }}>
                     <button onClick={() => this.generateArray()}>
                         Generate New Array
                     </button>
@@ -119,7 +119,8 @@ export default class SortingVisualiser extends React.Component<
                                 key={idx}
                                 style={{
                                     width: `${barWidth}px`,
-                                    height: `${value}px`
+                                    height: `${value}px`,
+                                    backgroundColor: defaultBar
                                 }}></div>
                         );
                     })}
