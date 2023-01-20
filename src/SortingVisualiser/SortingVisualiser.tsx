@@ -50,21 +50,33 @@ export default class SortingVisualiser extends React.Component<
         console.log(this.props.size);
 
         return (
-            <div
-                className="array-container"
-                style={{ left: `${marg}px`, right: `${marg}px` }}>
-                {array.map((value, idx) => {
-                    return (
-                        <div
-                            className="array-bar"
-                            key={idx}
-                            style={{
-                                width: `${barWidth}px`,
-                                height: `${value}px`
-                            }}></div>
-                    );
-                })}
-            </div>
+            <>
+                <div>
+                    <button onClick={() => this.generateArray()}>
+                        Generate New Array
+                    </button>
+                    <button>Selection Sort</button>
+                </div>
+                <div
+                    className="array-container"
+                    style={{
+                        left: `${marg}px`,
+                        right: `${marg}px`,
+                        height: `${this.props.max}px`
+                    }}>
+                    {array.map((value, idx) => {
+                        return (
+                            <div
+                                className="array-bar"
+                                key={idx}
+                                style={{
+                                    width: `${barWidth}px`,
+                                    height: `${value}px`
+                                }}></div>
+                        );
+                    })}
+                </div>
+            </>
         );
     }
 }
