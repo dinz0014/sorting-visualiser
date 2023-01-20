@@ -45,12 +45,14 @@ export default class SortingVisualiser extends React.Component<
     render(): React.ReactNode {
         const { array, width } = this.state;
         const barWidth = 0.7 * ((width * 0.7) / this.props.size - 1);
-        const leftMarg = width * 0.15;
+        const marg = width * 0.15;
         const containerWidth = (barWidth + 1) * this.props.size;
         console.log(this.props.size);
 
         return (
-            <div className="array-container" style={{ left: `${leftMarg}px` }}>
+            <div
+                className="array-container"
+                style={{ left: `${marg}px`, right: `${marg}px` }}>
                 {array.map((value, idx) => {
                     return (
                         <div
@@ -58,7 +60,7 @@ export default class SortingVisualiser extends React.Component<
                             key={idx}
                             style={{
                                 width: `${barWidth}px`,
-                                height: `${0.85 * value}px`
+                                height: `${value}px`
                             }}></div>
                     );
                 })}
