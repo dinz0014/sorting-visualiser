@@ -1,4 +1,4 @@
-export type sortVizProps = {
+export type SortVizProps = {
     size: number;
     min: number;
     max: number;
@@ -6,20 +6,36 @@ export type sortVizProps = {
     height: number;
 };
 
-export type sortVizState = {
+export type SortVizState = {
     currArray: number[];
 };
 
-export enum animationType {
-    ComparisonOn,
-    ComparisonOff,
-    Swap
+export enum AnimationType {
+    ComparisonOn = 1,
+    ComparisonOff = 2,
+    Swap = 3,
+    Replace = 4
 }
 
-export type animation = {
-    type: animationType;
+export type ComparisonAnimation = {
+    type: AnimationType.ComparisonOn | AnimationType.ComparisonOff;
     firstIdx: number;
-    firstValue?: number;
     secondIdx: number;
-    secondValue?: number;
+    colour: string;
 };
+
+export type SwapAnimation = {
+    type: AnimationType.Swap;
+    firstIdx: number;
+    firstValue: number;
+    secondIdx: number;
+    secondValue: number;
+};
+
+export type ReplaceAnimation = {
+    type: AnimationType.Replace;
+    idx: number;
+    value: number;
+};
+
+export type Animation = ComparisonAnimation | SwapAnimation | ReplaceAnimation;

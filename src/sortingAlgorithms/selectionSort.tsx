@@ -1,5 +1,6 @@
-import { animation } from '../types/sortVisualiserTypes';
-import { animationType } from '../types/sortVisualiserTypes';
+import { comparisonBarCol, defaultBarCol } from '../colours';
+import { Animation } from '../types/sortVisualiserTypes';
+import { AnimationType } from '../types/sortVisualiserTypes';
 
 /*
 Function that takes in the array of numbers to sort and performs Selection Sort.
@@ -8,8 +9,8 @@ This function returns a array of animations which, when processed, display the e
 */
 export default function getSelectionSortAnimations(
     array: number[]
-): [animation[], number[]] {
-    const animations: animation[] = [];
+): [Animation[], number[]] {
+    const animations: Animation[] = [];
 
     for (let i = 0; i < array.length; i++) {
         let currMin = array[i];
@@ -18,14 +19,16 @@ export default function getSelectionSortAnimations(
         for (let j = i + 1; j < array.length; j++) {
             // Push two animations (one for turning the array bars into their comparison colour and one to turn back to default colour)
             animations.push({
-                type: animationType.ComparisonOn,
+                type: AnimationType.ComparisonOn,
                 firstIdx: mindex,
-                secondIdx: j
+                secondIdx: j,
+                colour: comparisonBarCol
             });
             animations.push({
-                type: animationType.ComparisonOff,
+                type: AnimationType.ComparisonOff,
                 firstIdx: j,
-                secondIdx: mindex
+                secondIdx: mindex,
+                colour: defaultBarCol
             });
 
             if (array[j] < currMin) {
@@ -40,7 +43,7 @@ export default function getSelectionSortAnimations(
 
         // Here, we are swapping two values so add this into the animations
         animations.push({
-            type: animationType.Swap,
+            type: AnimationType.Swap,
             firstIdx: i,
             firstValue: array[i],
             secondIdx: mindex,

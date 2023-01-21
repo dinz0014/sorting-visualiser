@@ -1,24 +1,27 @@
 import React from 'react';
 import { siteBgCol, comparisonBarCol, defaultBarCol } from '../colours';
-import getBubbleSortAnimations from '../sortingAlgorithms/bubbleSort';
-import getOptimisedBubbleSortAnimations from '../sortingAlgorithms/bubbleSort';
+import {
+    getBubbleSortAnimations,
+    getOptimisedBubbleSortAnimations
+} from '../sortingAlgorithms/bubbleSort';
+import getIterativeMergeSortAnimations from '../sortingAlgorithms/iterativeMergeSort';
 import getSelectionSortAnimations from '../sortingAlgorithms/selectionSort';
 import {
-    animation,
-    animationType,
-    sortVizProps,
-    sortVizState
+    Animation,
+    AnimationType,
+    SortVizProps,
+    SortVizState
 } from '../types/sortVisualiserTypes';
 import './SortingVisualiser.css';
 
 // Main component class for Sorting Visualiser
 export default class SortingVisualiser extends React.Component<
-    sortVizProps,
-    sortVizState
+    SortVizProps,
+    SortVizState
 > {
     // Default properties. TODO: Pull these from a config file of sorts
     static defaultProps = {
-        size: 25,
+        size: 100,
         min: 10,
         max: 700,
         width: window.innerWidth,
@@ -30,7 +33,7 @@ export default class SortingVisualiser extends React.Component<
     originalArray: number[] = [];
 
     // Constructor
-    constructor(props: sortVizProps) {
+    constructor(props: SortVizProps) {
         super(props);
 
         this.state = {
@@ -69,39 +72,67 @@ export default class SortingVisualiser extends React.Component<
     }
 
     // Process an array of animations
-    processAnimations(animations: animation[], sortedArray: number[]): void {
+    processAnimations(animations: Animation[], sortedArray: number[]): void {
         for (let i = 0; i < animations.length; i++) {
-            const { type, firstIdx, firstValue, secondIdx, secondValue } =
-                animations[i];
+            const animation: Animation = animations[i];
 
-            // Get the HTML elements of the relevant bars
-            const firstStyle = document.getElementById(`${firstIdx}`)?.style;
-            const secondStyle = document.getElementById(`${secondIdx}`)?.style;
+            switch (animation.type) {
+                case AnimationType.ComparisonOn:
+                case AnimationType.ComparisonOff:
+                    const firstStyle = document.getElementById(
+                        `${animation.firstIdx}`
+                    )?.style;
+                    const secondStyle = document.getElementById(
+                        `${animation.secondIdx}`
+                    )?.style;
 
-            // If the relevant bars were not found, don't do anything
             if (firstStyle === undefined || secondStyle === undefined) {
-                return;
+                        break;
             }
 
-            // Check for animation type and change style accordingly
-            if (type === animationType.ComparisonOn) {
-                // Change bar colour when comparison initiated
                 setTimeout(() => {
-                    firstStyle.backgroundColor = comparisonBarCol;
-                    secondStyle.backgroundColor = comparisonBarCol;
+                        firstStyle.backgroundColor = animation.colour;
+                        secondStyle.backgroundColor = animation.colour;
                 }, i * SortingVisualiser.ANIMATION_TIME);
-            } else if (type === animationType.ComparisonOff) {
-                // Change bar colour back to default when comparison ends
+
+                    break;
+
+                case AnimationType.Swap:
+                    const firstBarStyle = document.getElementById(
+                        `${animation.firstIdx}`
+                    )?.style;
+                    const secondBarStyle = document.getElementById(
+                        `${animation.secondIdx}`
+                    )?.style;
+
+                    if (
+                        firstBarStyle === undefined ||
+                        secondBarStyle === undefined
+                    ) {
+                        break;
+                    }
+
                 setTimeout(() => {
-                    firstStyle.backgroundColor = defaultBarCol;
-                    secondStyle.backgroundColor = defaultBarCol;
+                        firstBarStyle.height = `${animation.firstValue}px`;
+                        secondBarStyle.height = `${animation.secondValue}px`;
                 }, i * SortingVisualiser.ANIMATION_TIME);
-            } else {
-                // Swap bar height when a swap animation is encountered
+
+                    break;
+
+                case AnimationType.Replace:
+                    const barStyle = document.getElementById(
+                        `${animation.idx}`
+                    )?.style;
+
+                    if (barStyle == undefined) {
+                        break;
+                    }
+
                 setTimeout(() => {
-                    firstStyle.height = `${firstValue}px`;
-                    secondStyle.height = `${secondValue}px`;
+                        barStyle.height = `${animation.value}px`;
                 }, i * SortingVisualiser.ANIMATION_TIME);
+
+                    break;
             }
 
             // At the end of all animations, change the state with new sorted array

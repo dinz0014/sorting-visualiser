@@ -1,5 +1,6 @@
-import { animation } from '../types/sortVisualiserTypes';
-import { animationType } from '../types/sortVisualiserTypes';
+import { comparisonBarCol, defaultBarCol } from '../colours';
+import { Animation } from '../types/sortVisualiserTypes';
+import { AnimationType } from '../types/sortVisualiserTypes';
 
 /*
 Function that takes in an array of numbers to sort using bubble sort.
@@ -8,8 +9,8 @@ This function returns an array of animations that help visualise the execution o
 */
 export function getBubbleSortAnimations(
     array: number[]
-): [animation[], number[]] {
-    const animations: animation[] = [];
+): [Animation[], number[]] {
+    const animations: Animation[] = [];
     let swapped: boolean = false;
 
     do {
@@ -17,14 +18,16 @@ export function getBubbleSortAnimations(
         for (let i = 1; i < array.length; i++) {
             // Push two animations, one to indicate a colour change for comparison and another to return back to default colour
             animations.push({
-                type: animationType.ComparisonOn,
+                type: AnimationType.ComparisonOn,
                 firstIdx: i,
-                secondIdx: i - 1
+                secondIdx: i - 1,
+                colour: comparisonBarCol
             });
             animations.push({
-                type: animationType.ComparisonOff,
+                type: AnimationType.ComparisonOff,
                 firstIdx: i,
-                secondIdx: i - 1
+                secondIdx: i - 1,
+                colour: defaultBarCol
             });
 
             // If the elements are out of order, swap them and remember that we swapped them
@@ -36,7 +39,7 @@ export function getBubbleSortAnimations(
 
                 // Push a swap animation
                 animations.push({
-                    type: animationType.Swap,
+                    type: AnimationType.Swap,
                     firstIdx: i,
                     firstValue: array[i],
                     secondIdx: i - 1,
@@ -58,8 +61,8 @@ This function returns an array of animations that help visualise the execution o
 */
 export function getOptimisedBubbleSortAnimations(
     array: number[]
-): [animation[], number[]] {
-    const animations: animation[] = [];
+): [Animation[], number[]] {
+    const animations: Animation[] = [];
     let n = array.length;
 
     do {
@@ -69,14 +72,16 @@ export function getOptimisedBubbleSortAnimations(
         for (let i = 1; i < n; i++) {
             // Push two animations, one to indicate a colour change for comparison and another to return back to default colour
             animations.push({
-                type: animationType.ComparisonOn,
+                type: AnimationType.ComparisonOn,
                 firstIdx: i,
-                secondIdx: i - 1
+                secondIdx: i - 1,
+                colour: comparisonBarCol
             });
             animations.push({
-                type: animationType.ComparisonOff,
+                type: AnimationType.ComparisonOff,
                 firstIdx: i,
-                secondIdx: i - 1
+                secondIdx: i - 1,
+                colour: defaultBarCol
             });
 
             // If the elements are out of order, we remember the index where the bigger element was swapped to
@@ -88,7 +93,7 @@ export function getOptimisedBubbleSortAnimations(
 
                 // Push a swap animation
                 animations.push({
-                    type: animationType.Swap,
+                    type: AnimationType.Swap,
                     firstIdx: i,
                     firstValue: array[i],
                     secondIdx: i - 1,
