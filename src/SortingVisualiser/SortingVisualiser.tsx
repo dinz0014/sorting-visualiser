@@ -86,14 +86,14 @@ export default class SortingVisualiser extends React.Component<
                         `${animation.secondIdx}`
                     )?.style;
 
-            if (firstStyle === undefined || secondStyle === undefined) {
+                    if (firstStyle === undefined || secondStyle === undefined) {
                         break;
-            }
+                    }
 
-                setTimeout(() => {
+                    setTimeout(() => {
                         firstStyle.backgroundColor = animation.colour;
                         secondStyle.backgroundColor = animation.colour;
-                }, i * SortingVisualiser.ANIMATION_TIME);
+                    }, i * SortingVisualiser.ANIMATION_TIME);
 
                     break;
 
@@ -112,10 +112,10 @@ export default class SortingVisualiser extends React.Component<
                         break;
                     }
 
-                setTimeout(() => {
+                    setTimeout(() => {
                         firstBarStyle.height = `${animation.firstValue}px`;
                         secondBarStyle.height = `${animation.secondValue}px`;
-                }, i * SortingVisualiser.ANIMATION_TIME);
+                    }, i * SortingVisualiser.ANIMATION_TIME);
 
                     break;
 
@@ -128,9 +128,9 @@ export default class SortingVisualiser extends React.Component<
                         break;
                     }
 
-                setTimeout(() => {
+                    setTimeout(() => {
                         barStyle.height = `${animation.value}px`;
-                }, i * SortingVisualiser.ANIMATION_TIME);
+                    }, i * SortingVisualiser.ANIMATION_TIME);
 
                     break;
             }
@@ -170,6 +170,14 @@ export default class SortingVisualiser extends React.Component<
         this.processAnimations(animations, sortedArray);
     }
 
+    visualiseIterativeMergeSort(): void {
+        const [animations, sortedArray] = getIterativeMergeSortAnimations(
+            this.state.currArray
+        );
+
+        this.processAnimations(animations, sortedArray);
+    }
+
     // Renders the component to be viewed
     render(): React.ReactNode {
         // Calculates margins and bar width
@@ -188,9 +196,10 @@ export default class SortingVisualiser extends React.Component<
                     style={{
                         backgroundColor: siteBgCol,
                         height: `${SortingVisualiser.CONTROLS_HEIGHT}px`
-                    }}>
+                    }}
+                >
                     <button onClick={() => this.revertArray()}>
-                        Revert Array
+                        Undo Sorting
                     </button>
                     <button onClick={() => this.generateArray()}>
                         Generate New Array
@@ -204,6 +213,9 @@ export default class SortingVisualiser extends React.Component<
                     <button onClick={() => this.visualiseOptimisedBubbleSort()}>
                         Optimised Bubble Sort
                     </button>
+                    <button onClick={() => this.visualiseIterativeMergeSort()}>
+                        Iterative Merge Sort
+                    </button>
                 </div>
                 <div
                     className="array-container"
@@ -213,7 +225,8 @@ export default class SortingVisualiser extends React.Component<
                         height: `${
                             height - SortingVisualiser.CONTROLS_HEIGHT
                         }px`
-                    }}>
+                    }}
+                >
                     {currArray.map((value, idx) => {
                         return (
                             <div
@@ -224,7 +237,8 @@ export default class SortingVisualiser extends React.Component<
                                     width: `${barWidth}px`,
                                     height: `${value}px`,
                                     backgroundColor: defaultBarCol
-                                }}></div>
+                                }}
+                            ></div>
                         );
                     })}
                 </div>
