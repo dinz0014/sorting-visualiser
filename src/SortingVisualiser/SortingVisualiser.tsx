@@ -1,6 +1,7 @@
 import React from 'react';
 import { siteBgCol, comparisonBarCol, defaultBarCol } from '../colours';
 import getBubbleSortAnimations from '../sortingAlgorithms/bubbleSort';
+import getOptimisedBubbleSortAnimations from '../sortingAlgorithms/bubbleSort';
 import getSelectionSortAnimations from '../sortingAlgorithms/selectionSort';
 import {
     animation,
@@ -101,6 +102,14 @@ export default class SortingVisualiser extends React.Component<
 
         this.processAnimations(animations);
     }
+
+    // Visualises the execution of optimised bubble sort
+    visualiseOptimisedBubbleSort(): void {
+        const animations = getOptimisedBubbleSortAnimations(this.state.array);
+
+        this.processAnimations(animations);
+    }
+
     // Renders the component to be viewed
     render(): React.ReactNode {
         // Calculates margins and bar width
@@ -127,6 +136,9 @@ export default class SortingVisualiser extends React.Component<
                     </button>
                     <button onClick={() => this.visualiseBubbleSort()}>
                         Bubble Sort
+                    </button>
+                    <button onClick={() => this.visualiseOptimisedBubbleSort()}>
+                        Optimised Bubble Sort
                     </button>
                 </div>
                 <div
