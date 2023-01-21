@@ -6,7 +6,7 @@ Function that takes in an array of numbers to sort using bubble sort.
 
 This function returns an array of animations that help visualise the execution of bubble sort, as well as the final sorted array.
 */
-export default function getBubbleSortAnimations(
+export function getBubbleSortAnimations(
     array: number[]
 ): [animation[], number[]] {
     const animations: animation[] = [];
