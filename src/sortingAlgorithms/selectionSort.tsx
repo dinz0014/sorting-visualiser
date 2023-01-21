@@ -8,8 +8,8 @@ This function returns a array of animations which, when processed, display the e
 */
 export default function getSelectionSortAnimations(
     array: number[]
-): animation[] {
-    const animations = [];
+): [animation[], number[]] {
+    const animations: animation[] = [];
 
     for (let i = 0; i < array.length; i++) {
         let currMin = array[i];
@@ -48,5 +48,5 @@ export default function getSelectionSortAnimations(
         });
     }
 
-    return animations;
+    return [animations, array];
 }

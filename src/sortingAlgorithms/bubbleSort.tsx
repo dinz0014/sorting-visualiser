@@ -6,7 +6,9 @@ Function that takes in an array of numbers to sort using bubble sort.
 
 This function returns an array of animations that help visualise the execution of bubble sort
 */
-export default function getBubbleSortAnimations(array: number[]): animation[] {
+export default function getBubbleSortAnimations(
+    array: number[]
+): [animation[], number[]] {
     const animations: animation[] = [];
     let swapped: boolean = false;
 
@@ -44,7 +46,7 @@ export default function getBubbleSortAnimations(array: number[]): animation[] {
         }
     } while (swapped);
 
-    return animations;
+    return [animations, array];
 }
 
 /*
@@ -54,7 +56,9 @@ The idea is that every value after (and including) the last value that was swapp
 
 This function returns an array of animations that help visualise the execution of optimised bubble sort
 */
-export function getOptimisedBubbleSortAnimations(array: number[]): animation[] {
+export function getOptimisedBubbleSortAnimations(
+    array: number[]
+): [animation[], number[]] {
     const animations: animation[] = [];
     let n = array.length;
 
@@ -97,5 +101,5 @@ export function getOptimisedBubbleSortAnimations(array: number[]): animation[] {
         n = newEnd;
     } while (n > 1);
 
-    return animations;
+    return [animations, array];
 }

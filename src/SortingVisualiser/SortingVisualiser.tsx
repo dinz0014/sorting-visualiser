@@ -59,7 +59,7 @@ export default class SortingVisualiser extends React.Component<
     }
 
     // Process an array of animations
-    processAnimations(animations: animation[]): void {
+    processAnimations(animations: animation[], sortedArray: number[]): void {
         for (let i = 0; i < animations.length; i++) {
             const { type, firstIdx, firstValue, secondIdx, secondValue } =
                 animations[i];
@@ -86,28 +86,39 @@ export default class SortingVisualiser extends React.Component<
                     secondStyle.height = `${secondValue}px`;
                 }, i * SortingVisualiser.ANIMATION_TIME);
             }
+
+            if (i == animations.length - 1) {
+                setTimeout(() => {
+                    this.setState({ currArray: sortedArray });
+                }, (i + 1) * SortingVisualiser.ANIMATION_TIME);
+            }
         }
     }
 
     // Visualises the execution of selection sort
     visualiseSelectionSort(): void {
-        const animations = getSelectionSortAnimations(this.state.array);
-
-        this.processAnimations(animations);
+        const [animations, sortedArray] = getSelectionSortAnimations(
+            this.state.currArray
+        );
+        this.processAnimations(animations, sortedArray);
     }
 
     // Visualises the execution of bubble sort
     visualiseBubbleSort(): void {
-        const animations = getBubbleSortAnimations(this.state.array);
+        const [animations, sortedArray] = getBubbleSortAnimations(
+            this.state.currArray
+        );
 
-        this.processAnimations(animations);
+        this.processAnimations(animations, sortedArray);
     }
 
     // Visualises the execution of optimised bubble sort
     visualiseOptimisedBubbleSort(): void {
-        const animations = getOptimisedBubbleSortAnimations(this.state.array);
+        const [animations, sortedArray] = getOptimisedBubbleSortAnimations(
+            this.state.currArray
+        );
 
-        this.processAnimations(animations);
+        this.processAnimations(animations, sortedArray);
     }
 
     // Renders the component to be viewed
