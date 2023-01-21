@@ -86,6 +86,12 @@ export default class SortingVisualiser extends React.Component<
         }
     }
 
+    // Visualises the execution of selection sort
+    visualiseSelectionSort(): void {
+        const animations = getSelectionSortAnimations(this.state.array);
+
+        this.processAnimations(animations);
+    }
     // Renders the component to be viewed
     render(): React.ReactNode {
         // Calculates margins and bar width
