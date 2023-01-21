@@ -7,7 +7,7 @@ export type sortVizProps = {
 };
 
 export type sortVizState = {
-    array: number[];
+    currArray: number[];
 };
 
 export enum animationType {

@@ -27,13 +27,14 @@ export default class SortingVisualiser extends React.Component<
 
     static ANIMATION_TIME = 10;
     static CONTROLS_HEIGHT = 80;
+    originalArray: number[] = [];
 
     // Constructor
     constructor(props: sortVizProps) {
         super(props);
 
         this.state = {
-            array: []
+            currArray: []
         };
     }
 
@@ -47,15 +48,23 @@ export default class SortingVisualiser extends React.Component<
         return Math.floor(Math.random() * (end - start + 1) + start);
     }
 
+    unsortArray(): void {
+        let currArray: number[] = Object.assign([], this.originalArray);
+        this.setState({ currArray });
+    }
+
     // Generates the array of random numbers to be sorted
     generateArray(): void {
-        const array: number[] = [];
+        const currArray: number[] = [];
 
         for (let i = 0; i < this.props.size; i++) {
-            array.push(this.randomNumBetween(this.props.min, this.props.max));
+            currArray.push(
+                this.randomNumBetween(this.props.min, this.props.max)
+            );
         }
 
-        this.setState({ array });
+        this.originalArray = Object.assign([], currArray);
+        this.setState({ currArray });
     }
 
     // Process an array of animations
@@ -124,7 +133,8 @@ export default class SortingVisualiser extends React.Component<
     // Renders the component to be viewed
     render(): React.ReactNode {
         // Calculates margins and bar width
-        const { array } = this.state;
+
+        const currArray = this.state.currArray;
         const width = this.props.width;
         const height = this.props.height;
         const barWidth = 0.7 * ((width * 0.8) / this.props.size - 1);
@@ -139,6 +149,9 @@ export default class SortingVisualiser extends React.Component<
                         backgroundColor: siteBgCol,
                         height: `${SortingVisualiser.CONTROLS_HEIGHT}px`
                     }}>
+                    <button onClick={() => this.unsortArray()}>
+                        Revert Array
+                    </button>
                     <button onClick={() => this.generateArray()}>
                         Generate New Array
                     </button>
@@ -161,7 +174,7 @@ export default class SortingVisualiser extends React.Component<
                             height - SortingVisualiser.CONTROLS_HEIGHT
                         }px`
                     }}>
-                    {array.map((value, idx) => {
+                    {currArray.map((value, idx) => {
                         return (
                             <div
                                 className="array-bar"
