@@ -55,10 +55,8 @@ export default class SortingVisualiser extends React.Component<
         this.setState({ array });
     }
 
-    // Visualises the execution of selection sort
-    visualiseSelectionSort(): void {
-        const animations = getSelectionSortAnimations(this.state.array);
-
+    // Process an array of animations
+    processAnimations(animations: animation[]): void {
         for (let i = 0; i < animations.length; i++) {
             const { type, firstIdx, firstValue, secondIdx, secondValue } =
                 animations[i];
