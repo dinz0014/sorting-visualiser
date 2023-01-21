@@ -48,7 +48,8 @@ export default class SortingVisualiser extends React.Component<
         return Math.floor(Math.random() * (end - start + 1) + start);
     }
 
-    unsortArray(): void {
+    // Revert any sorting that has been done on the array
+    revertArray(): void {
         let currArray: number[] = Object.assign([], this.originalArray);
         this.setState({ currArray });
     }
@@ -72,30 +73,38 @@ export default class SortingVisualiser extends React.Component<
         for (let i = 0; i < animations.length; i++) {
             const { type, firstIdx, firstValue, secondIdx, secondValue } =
                 animations[i];
+
+            // Get the HTML elements of the relevant bars
             const firstStyle = document.getElementById(`${firstIdx}`)?.style;
             const secondStyle = document.getElementById(`${secondIdx}`)?.style;
 
+            // If the relevant bars were not found, don't do anything
             if (firstStyle === undefined || secondStyle === undefined) {
                 return;
             }
 
+            // Check for animation type and change style accordingly
             if (type === animationType.ComparisonOn) {
+                // Change bar colour when comparison initiated
                 setTimeout(() => {
                     firstStyle.backgroundColor = comparisonBarCol;
                     secondStyle.backgroundColor = comparisonBarCol;
                 }, i * SortingVisualiser.ANIMATION_TIME);
             } else if (type === animationType.ComparisonOff) {
+                // Change bar colour back to default when comparison ends
                 setTimeout(() => {
                     firstStyle.backgroundColor = defaultBarCol;
                     secondStyle.backgroundColor = defaultBarCol;
                 }, i * SortingVisualiser.ANIMATION_TIME);
             } else {
+                // Swap bar height when a swap animation is encountered
                 setTimeout(() => {
                     firstStyle.height = `${firstValue}px`;
                     secondStyle.height = `${secondValue}px`;
                 }, i * SortingVisualiser.ANIMATION_TIME);
             }
 
+            // At the end of all animations, change the state with new sorted array
             if (i == animations.length - 1) {
                 setTimeout(() => {
                     this.setState({ currArray: sortedArray });
@@ -149,7 +158,7 @@ export default class SortingVisualiser extends React.Component<
                         backgroundColor: siteBgCol,
                         height: `${SortingVisualiser.CONTROLS_HEIGHT}px`
                     }}>
-                    <button onClick={() => this.unsortArray()}>
+                    <button onClick={() => this.revertArray()}>
                         Revert Array
                     </button>
                     <button onClick={() => this.generateArray()}>

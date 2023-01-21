@@ -4,7 +4,7 @@ import { animationType } from '../types/sortVisualiserTypes';
 /*
 Function that takes in an array of numbers to sort using bubble sort.
 
-This function returns an array of animations that help visualise the execution of bubble sort
+This function returns an array of animations that help visualise the execution of bubble sort, as well as the final sorted array.
 */
 export default function getBubbleSortAnimations(
     array: number[]
@@ -54,7 +54,7 @@ Function that takes in an array of numbers to sort using an optimised version of
 
 The idea is that every value after (and including) the last value that was swapped towards the end of the array is in its final sorted position.
 
-This function returns an array of animations that help visualise the execution of optimised bubble sort
+This function returns an array of animations that help visualise the execution of optimised bubble sort, as well as the final sorted array.
 */
 export function getOptimisedBubbleSortAnimations(
     array: number[]
