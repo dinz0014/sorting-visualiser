@@ -3,6 +3,7 @@ export type sortVizProps = {
     min: number;
     max: number;
     width: number;
+    height: number;
 };
 
 export type sortVizState = {

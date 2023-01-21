@@ -1,4 +1,5 @@
 import React from 'react';
+import { siteBgCol, comparisonBarCol, defaultBarCol } from '../colours';
 import getSelectionSortAnimations from '../sortingAlgorithms/selectionSort';
 import {
     animationType,
@@ -14,13 +15,15 @@ export default class SortingVisualiser extends React.Component<
 > {
     // Default properties. TODO: Pull these from a config file of sorts
     static defaultProps = {
-        size: 200,
+        size: 25,
         min: 10,
         max: 700,
-        width: window.innerWidth
+        width: window.innerWidth,
+        height: window.innerHeight
     };
 
-    static ANIMATION_TIME = 3;
+    static ANIMATION_TIME = 10;
+    static CONTROLS_HEIGHT = 80;
 
     // Constructor
     constructor(props: sortVizProps) {
@@ -68,13 +71,13 @@ export default class SortingVisualiser extends React.Component<
 
             if (type === animationType.ComparisonOn) {
                 setTimeout(() => {
-                    firstStyle.backgroundColor = comparisonBar;
-                    secondStyle.backgroundColor = comparisonBar;
+                    firstStyle.backgroundColor = comparisonBarCol;
+                    secondStyle.backgroundColor = comparisonBarCol;
                 }, i * SortingVisualiser.ANIMATION_TIME);
             } else if (type === animationType.ComparisonOff) {
                 setTimeout(() => {
-                    firstStyle.backgroundColor = defaultBar;
-                    secondStyle.backgroundColor = defaultBar;
+                    firstStyle.backgroundColor = defaultBarCol;
+                    secondStyle.backgroundColor = defaultBarCol;
                 }, i * SortingVisualiser.ANIMATION_TIME);
             } else {
                 setTimeout(() => {
@@ -90,13 +93,19 @@ export default class SortingVisualiser extends React.Component<
         // Calculates margins and bar width
         const { array } = this.state;
         const width = this.props.width;
+        const height = this.props.height;
         const barWidth = 0.7 * ((width * 0.8) / this.props.size - 1);
         const marg = width * 0.1;
 
         // Renders the array bars and sets their relevant style attributes
         return (
-            <div style={{ backgroundColor: siteBackground }}>
-                <div style={{ backgroundColor: siteBackground }}>
+            <div>
+                <div
+                    className="controlBar"
+                    style={{
+                        backgroundColor: siteBgCol,
+                        height: `${SortingVisualiser.CONTROLS_HEIGHT}px`
+                    }}>
                     <button onClick={() => this.generateArray()}>
                         Generate New Array
                     </button>
@@ -107,9 +116,11 @@ export default class SortingVisualiser extends React.Component<
                 <div
                     className="array-container"
                     style={{
-                        left: `${marg}px`,
-                        right: `${marg}px`,
-                        height: `${this.props.max}px`
+                        backgroundColor: siteBgCol,
+                        width: `100%`,
+                        height: `${
+                            height - SortingVisualiser.CONTROLS_HEIGHT
+                        }px`
                     }}>
                     {array.map((value, idx) => {
                         return (
@@ -120,12 +131,12 @@ export default class SortingVisualiser extends React.Component<
                                 style={{
                                     width: `${barWidth}px`,
                                     height: `${value}px`,
-                                    backgroundColor: defaultBar
+                                    backgroundColor: defaultBarCol
                                 }}></div>
                         );
                     })}
                 </div>
-            </>
+            </div>
         );
     }
 }
