@@ -4,7 +4,7 @@ import { animationType } from '../types/sortVisualiserTypes';
 /*
 Function that takes in the array of numbers to sort and performs Selection Sort.
 
-This function returns a list of animations which, when processed, display the execution of selection sort.
+This function returns a array of animations which, when processed, display the execution of selection sort.
 */
 export default function getSelectionSortAnimations(
     array: number[]
