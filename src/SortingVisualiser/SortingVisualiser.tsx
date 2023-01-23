@@ -21,7 +21,7 @@ export default class SortingVisualiser extends React.Component<
 > {
     // Default properties. TODO: Pull these from a config file of sorts
     static defaultProps = {
-        size: 100,
+        size: 50,
         min: 10,
         max: 700,
         width: window.innerWidth,
@@ -189,36 +189,58 @@ export default class SortingVisualiser extends React.Component<
         const currArray = this.state.currArray;
         const width = this.props.width;
         const height = this.props.height;
-        const barWidth = 0.7 * ((width * 0.8) / this.props.size - 1);
-        const marg = width * 0.1;
+        const barWidth = (width * 0.8) / this.props.size - 1;
 
         // Renders the array bars and sets their relevant style attributes
         return (
             <div>
                 <div
-                    className="controlBar"
+                    className="control-bar"
                     style={{
-                        backgroundColor: siteBgCol,
+                        backgroundColor: background,
                         height: `${SortingVisualiser.CONTROLS_HEIGHT}px`
-                    }}
-                >
-                    <button onClick={() => this.revertArray()}>
+                    }}>
+                    <button
+                        className="array-button"
+                        onClick={() => {
+                            this.revertArray();
+                        }}>
                         Undo Sorting
                     </button>
-                    <button onClick={() => this.generateArray()}>
+                    <button
+                        className="array-button"
+                        onClick={() => {
+                            this.generateArray();
+                        }}>
                         Generate New Array
                     </button>
-                    <button onClick={() => this.visualiseSelectionSort()}>
+                    <button
+                        className="sorting-button"
+                        onClick={() => {
+                            this.visualiseSelectionSort();
+                        }}>
                         Selection Sort
                     </button>
-                    <button onClick={() => this.visualiseBubbleSort()}>
+                    <button
+                        className="sorting-button"
+                        onClick={() => {
+                            this.visualiseBubbleSort();
+                        }}>
                         Bubble Sort
                     </button>
-                    <button onClick={() => this.visualiseOptimisedBubbleSort()}>
+                    <button
+                        className="sorting-button"
+                        onClick={() => {
+                            this.visualiseOptimisedBubbleSort();
+                        }}>
                         Optimised Bubble Sort
                     </button>
-                    <button onClick={() => this.visualiseIterativeMergeSort()}>
-                        Iterative Merge Sort
+                    <button
+                        className="sorting-button"
+                        onClick={() => {
+                            this.visualiseIterativeMergeSort();
+                        }}>
+                        Merge Sort
                     </button>
                 </div>
                 <div
