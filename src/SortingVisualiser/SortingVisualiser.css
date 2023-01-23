@@ -46,13 +46,12 @@
     box-shadow: 0px 0px 10px 2px var(--sort-button-colour);
 }
 
-.array-container{
-    /* margin: 10px; */
-    position : relative;
+.array-container span{
+    display: inline-block;
 }
 
 .array-bar{
-    display: inline-flex;
+    display: inline-block;
     margin : 0 1px;
     margin-top : 100px;
 }

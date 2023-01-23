@@ -252,9 +252,18 @@ export default class SortingVisualiser extends React.Component<
                             height - SortingVisualiser.CONTROLS_HEIGHT
                         }px`
                     }}>
+                    {/*Hacky way to get the array bars to be positioned exactly the same vertically no matter what the array is. Forces a dummy span element
+                    which has the maximum height possible for a bar. This forces all of the array bars to be aligned to the bottom of this dummy bar. */}
+                    <span
+                        className="array-bar"
+                        style={{
+                            width: `1px`,
+                            height: `700px`,
+                            backgroundColor: background
+                        }}></span>
                     {currArray.map((value, idx) => {
                         return (
-                            <div
+                            <span
                                 className="array-bar"
                                 id={`${idx}`}
                                 key={idx}
@@ -262,7 +271,7 @@ export default class SortingVisualiser extends React.Component<
                                     width: `${barWidth}px`,
                                     height: `${value}px`,
                                     backgroundColor: primary
-                                }}></div>
+                                }}></span>
                         );
                     })}
                 </div>
