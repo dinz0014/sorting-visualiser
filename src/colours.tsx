@@ -1,3 +1,3 @@
-export const defaultBarCol = 'lightgreen';
-export const siteBgCol = '#242424';
-export const comparisonBarCol = '#ff03f7';
+export const primary = '#A0E7E5';
+export const background = '#242424';
+export const secondary = '#F8ABB3';

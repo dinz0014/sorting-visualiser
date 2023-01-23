@@ -1,4 +1,4 @@
-import { comparisonBarCol, defaultBarCol } from '../colours';
+import { secondary, primary } from '../colours';
 import { Animation, AnimationType } from '../types/sortVisualiserTypes';
 
 export default function getIterativeMergeSortAnimations(
@@ -64,14 +64,14 @@ function merge(
             type: AnimationType.ComparisonOn,
             firstIdx: left + i,
             secondIdx: mid + 1 + j,
-            colour: comparisonBarCol
+            colour: secondary
         });
 
         animations.push({
             type: AnimationType.ComparisonOff,
             firstIdx: left + i,
             secondIdx: mid + 1 + j,
-            colour: defaultBarCol
+            colour: primary
         });
 
         // Push replace animations and replace the values in the original array with merged values

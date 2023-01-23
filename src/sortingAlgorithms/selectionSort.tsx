@@ -1,4 +1,4 @@
-import { comparisonBarCol, defaultBarCol } from '../colours';
+import { secondary, primary } from '../colours';
 import { Animation } from '../types/sortVisualiserTypes';
 import { AnimationType } from '../types/sortVisualiserTypes';
 
@@ -22,13 +22,13 @@ export default function getSelectionSortAnimations(
                 type: AnimationType.ComparisonOn,
                 firstIdx: mindex,
                 secondIdx: j,
-                colour: comparisonBarCol
+                colour: secondary
             });
             animations.push({
                 type: AnimationType.ComparisonOff,
                 firstIdx: j,
                 secondIdx: mindex,
-                colour: defaultBarCol
+                colour: primary
             });
 
             if (array[j] < currMin) {

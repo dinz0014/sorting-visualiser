@@ -1,5 +1,5 @@
 import React from 'react';
-import { siteBgCol, comparisonBarCol, defaultBarCol } from '../colours';
+import { background, primary } from '../colours';
 import {
     getBubbleSortAnimations,
     getOptimisedBubbleSortAnimations
@@ -224,13 +224,12 @@ export default class SortingVisualiser extends React.Component<
                 <div
                     className="array-container"
                     style={{
-                        backgroundColor: siteBgCol,
+                        backgroundColor: background,
                         width: `100%`,
                         height: `${
                             height - SortingVisualiser.CONTROLS_HEIGHT
                         }px`
-                    }}
-                >
+                    }}>
                     {currArray.map((value, idx) => {
                         return (
                             <div
@@ -240,9 +239,8 @@ export default class SortingVisualiser extends React.Component<
                                 style={{
                                     width: `${barWidth}px`,
                                     height: `${value}px`,
-                                    backgroundColor: defaultBarCol
-                                }}
-                            ></div>
+                                    backgroundColor: primary
+                                }}></div>
                         );
                     })}
                 </div>

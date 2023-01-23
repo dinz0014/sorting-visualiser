@@ -1,4 +1,4 @@
-import { comparisonBarCol, defaultBarCol } from '../colours';
+import { secondary, primary } from '../colours';
 import { Animation } from '../types/sortVisualiserTypes';
 import { AnimationType } from '../types/sortVisualiserTypes';
 
@@ -21,13 +21,13 @@ export function getBubbleSortAnimations(
                 type: AnimationType.ComparisonOn,
                 firstIdx: i,
                 secondIdx: i - 1,
-                colour: comparisonBarCol
+                colour: secondary
             });
             animations.push({
                 type: AnimationType.ComparisonOff,
                 firstIdx: i,
                 secondIdx: i - 1,
-                colour: defaultBarCol
+                colour: primary
             });
 
             // If the elements are out of order, swap them and remember that we swapped them
@@ -75,13 +75,13 @@ export function getOptimisedBubbleSortAnimations(
                 type: AnimationType.ComparisonOn,
                 firstIdx: i,
                 secondIdx: i - 1,
-                colour: comparisonBarCol
+                colour: secondary
             });
             animations.push({
                 type: AnimationType.ComparisonOff,
                 firstIdx: i,
                 secondIdx: i - 1,
-                colour: defaultBarCol
+                colour: primary
             });
 
             // If the elements are out of order, we remember the index where the bigger element was swapped to
