@@ -76,9 +76,11 @@ export default class SortingVisualiser extends React.Component<
         for (let i = 0; i < animations.length; i++) {
             const animation: Animation = animations[i];
 
+            // Switch based on animation type
             switch (animation.type) {
                 case AnimationType.ComparisonOn:
                 case AnimationType.ComparisonOff:
+                    // Handle comparison animations
                     const firstStyle = document.getElementById(
                         `${animation.firstIdx}`
                     )?.style;
@@ -98,6 +100,7 @@ export default class SortingVisualiser extends React.Component<
                     break;
 
                 case AnimationType.Swap:
+                    // Handle swap animations
                     const firstBarStyle = document.getElementById(
                         `${animation.firstIdx}`
                     )?.style;
@@ -120,6 +123,7 @@ export default class SortingVisualiser extends React.Component<
                     break;
 
                 case AnimationType.Replace:
+                    // Handle replace animations
                     const barStyle = document.getElementById(
                         `${animation.idx}`
                     )?.style;
