@@ -5,13 +5,10 @@ import {
     getOptimisedBubbleSortAnimations
 } from '../sortingAlgorithms/bubbleSort';
 import getIterativeMergeSortAnimations from '../sortingAlgorithms/iterativeMergeSort';
+import { getQuickSortAnimations } from '../sortingAlgorithms/quickSort';
 import getSelectionSortAnimations from '../sortingAlgorithms/selectionSort';
-import {
-    Animation,
-    AnimationType,
-    SortVizProps,
-    SortVizState
-} from '../types/sortVisualiserTypes';
+import { Animation, AnimationType } from '../types/animationTypes';
+import { SortVizProps, SortVizState } from '../types/sortVisualiserTypes';
 import './SortingVisualiser.css';
 
 // Main component class for Sorting Visualiser
@@ -182,6 +179,15 @@ export default class SortingVisualiser extends React.Component<
         this.processAnimations(animations, sortedArray);
     }
 
+    visualiseQuickSort(): void {
+        console.log('HI');
+        const [animations, sortedArray] = getQuickSortAnimations(
+            this.state.currArray
+        );
+        console.log(sortedArray);
+        this.processAnimations(animations, sortedArray);
+    }
+
     // Renders the component to be viewed
     render(): React.ReactNode {
         // Calculates margins and bar width
@@ -241,6 +247,13 @@ export default class SortingVisualiser extends React.Component<
                             this.visualiseIterativeMergeSort();
                         }}>
                         Merge Sort
+                    </button>
+                    <button
+                        className="sorting-button"
+                        onClick={() => {
+                            this.visualiseQuickSort();
+                        }}>
+                        Quick Sort
                     </button>
                 </div>
                 <div
