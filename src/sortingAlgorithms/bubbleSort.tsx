@@ -1,6 +1,6 @@
-import { secondary, primary } from '../colours';
+import { compare, swap } from '../animationUtils';
 import { Animation } from '../types/animationTypes';
-import { AnimationType } from '../types/animationTypes';
+import { ComparisonType } from '../types/comparisonTypes';
 
 /*
 Function that takes in an array of numbers to sort using bubble sort.
@@ -16,35 +16,10 @@ export function getBubbleSortAnimations(
     do {
         swapped = false;
         for (let i = 1; i < array.length; i++) {
-            // Push two animations, one to indicate a colour change for comparison and another to return back to default colour
-            animations.push({
-                type: AnimationType.ComparisonOn,
-                firstIdx: i,
-                secondIdx: i - 1,
-                colour: secondary
-            });
-            animations.push({
-                type: AnimationType.ComparisonOff,
-                firstIdx: i,
-                secondIdx: i - 1,
-                colour: primary
-            });
-
             // If the elements are out of order, swap them and remember that we swapped them
-            if (array[i] < array[i - 1]) {
-                let temp = array[i];
-                array[i] = array[i - 1];
-                array[i - 1] = temp;
+            if (compare(array, animations, i - 1, i, ComparisonType.GT)) {
+                swap(array, animations, i, i - 1);
                 swapped = true;
-
-                // Push a swap animation
-                animations.push({
-                    type: AnimationType.Swap,
-                    firstIdx: i,
-                    firstValue: array[i],
-                    secondIdx: i - 1,
-                    secondValue: array[i - 1]
-                });
             }
         }
     } while (swapped);
@@ -70,35 +45,10 @@ export function getOptimisedBubbleSortAnimations(
         let newEnd = 0;
 
         for (let i = 1; i < n; i++) {
-            // Push two animations, one to indicate a colour change for comparison and another to return back to default colour
-            animations.push({
-                type: AnimationType.ComparisonOn,
-                firstIdx: i,
-                secondIdx: i - 1,
-                colour: secondary
-            });
-            animations.push({
-                type: AnimationType.ComparisonOff,
-                firstIdx: i,
-                secondIdx: i - 1,
-                colour: primary
-            });
-
             // If the elements are out of order, we remember the index where the bigger element was swapped to
-            if (array[i] < array[i - 1]) {
-                let temp = array[i];
-                array[i] = array[i - 1];
-                array[i - 1] = temp;
+            if (compare(array, animations, i - 1, i, ComparisonType.GT)) {
+                swap(array, animations, i, i - 1);
                 newEnd = i;
-
-                // Push a swap animation
-                animations.push({
-                    type: AnimationType.Swap,
-                    firstIdx: i,
-                    firstValue: array[i],
-                    secondIdx: i - 1,
-                    secondValue: array[i - 1]
-                });
             }
         }
 

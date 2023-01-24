@@ -1,6 +1,6 @@
-import { secondary, primary } from '../colours';
+import { compare, swap } from '../animationUtils';
 import { Animation } from '../types/animationTypes';
-import { AnimationType } from '../types/animationTypes';
+import { ComparisonType } from '../types/comparisonTypes';
 
 /*
 Function that takes in the array of numbers to sort and performs Selection Sort.
@@ -13,42 +13,15 @@ export default function getSelectionSortAnimations(
     const animations: Animation[] = [];
 
     for (let i = 0; i < array.length; i++) {
-        let currMin = array[i];
         let mindex = i;
 
         for (let j = i + 1; j < array.length; j++) {
-            // Push two animations (one for turning the array bars into their comparison colour and one to turn back to default colour)
-            animations.push({
-                type: AnimationType.ComparisonOn,
-                firstIdx: mindex,
-                secondIdx: j,
-                colour: secondary
-            });
-            animations.push({
-                type: AnimationType.ComparisonOff,
-                firstIdx: j,
-                secondIdx: mindex,
-                colour: primary
-            });
-
-            if (array[j] < currMin) {
-                currMin = array[j];
+            if (compare(array, animations, j, mindex, ComparisonType.LT)) {
                 mindex = j;
             }
         }
 
-        let temp = array[mindex];
-        array[mindex] = array[i];
-        array[i] = temp;
-
-        // Here, we are swapping two values so add this into the animations
-        animations.push({
-            type: AnimationType.Swap,
-            firstIdx: i,
-            firstValue: array[i],
-            secondIdx: mindex,
-            secondValue: array[mindex]
-        });
+        swap(array, animations, mindex, i);
     }
 
     return [animations, array];

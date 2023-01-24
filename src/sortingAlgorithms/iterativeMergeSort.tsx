@@ -1,5 +1,6 @@
-import { secondary, primary } from '../colours';
-import { Animation, AnimationType } from '../types/animationTypes';
+import { compare, replace } from '../animationUtils';
+import { Animation } from '../types/animationTypes';
+import { ComparisonType } from '../types/comparisonTypes';
 
 export default function getIterativeMergeSortAnimations(
     array: number[]
@@ -59,55 +60,28 @@ function merge(
 
     // Perform the merge by referencing L and R, and replacing values in the original array
     while (i < l1 && j < l2) {
-        // Push two animations to indicate the starting and ending of comparison
-        animations.push({
-            type: AnimationType.ComparisonOn,
-            firstIdx: left + i,
-            secondIdx: mid + 1 + j,
-            colour: secondary
-        });
-
-        animations.push({
-            type: AnimationType.ComparisonOff,
-            firstIdx: left + i,
-            secondIdx: mid + 1 + j,
-            colour: primary
-        });
-
         // Push replace animations and replace the values in the original array with merged values
-        if (L[i] <= R[j]) {
-            animations.push({
-                type: AnimationType.Replace,
-                idx: k,
-                value: L[i]
-            });
-            array[k++] = L[i++];
+        if (
+            compare(
+                array,
+                animations,
+                left + i,
+                mid + 1 + j,
+                ComparisonType.LTE
+            )
+        ) {
+            replace(array, animations, k++, L[i++]);
         } else {
-            animations.push({
-                type: AnimationType.Replace,
-                idx: k,
-                value: R[j]
-            });
-            array[k++] = R[j++];
+            replace(array, animations, k++, R[j++]);
         }
     }
 
     // Complete the merge by copying the left over bits of either L or R
     while (i < l1) {
-        animations.push({
-            type: AnimationType.Replace,
-            idx: k,
-            value: L[i]
-        });
-        array[k++] = L[i++];
+        replace(array, animations, k++, L[i++]);
     }
 
     while (j < l2) {
-        animations.push({
-            type: AnimationType.Replace,
-            idx: k,
-            value: R[j]
-        });
-        array[k++] = R[j++];
+        replace(array, animations, k++, R[j++]);
     }
 }
