@@ -1,5 +1,5 @@
 import { secondary, primary } from '../colours';
-import { Animation, AnimationType } from '../types/sortVisualiserTypes';
+import { Animation, AnimationType } from '../types/animationTypes';
 
 export default function getIterativeMergeSortAnimations(
     array: number[]

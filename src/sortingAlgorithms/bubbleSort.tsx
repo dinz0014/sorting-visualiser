@@ -1,6 +1,6 @@
 import { secondary, primary } from '../colours';
-import { Animation } from '../types/sortVisualiserTypes';
-import { AnimationType } from '../types/sortVisualiserTypes';
+import { Animation } from '../types/animationTypes';
+import { AnimationType } from '../types/animationTypes';
 
 /*
 Function that takes in an array of numbers to sort using bubble sort.

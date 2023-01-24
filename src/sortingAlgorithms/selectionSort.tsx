@@ -1,6 +1,6 @@
 import { secondary, primary } from '../colours';
-import { Animation } from '../types/sortVisualiserTypes';
-import { AnimationType } from '../types/sortVisualiserTypes';
+import { Animation } from '../types/animationTypes';
+import { AnimationType } from '../types/animationTypes';
 
 /*
 Function that takes in the array of numbers to sort and performs Selection Sort.
