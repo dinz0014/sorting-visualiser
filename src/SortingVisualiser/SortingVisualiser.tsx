@@ -125,7 +125,7 @@ export default class SortingVisualiser extends React.Component<
                         `${animation.idx}`
                     )?.style;
 
-                    if (barStyle == undefined) {
+                    if (barStyle === undefined) {
                         break;
                     }
 
@@ -137,7 +137,7 @@ export default class SortingVisualiser extends React.Component<
             }
 
             // At the end of all animations, change the state with new sorted array
-            if (i == animations.length - 1) {
+            if (i === animations.length - 1) {
                 setTimeout(() => {
                     this.setState({ currArray: sortedArray });
                 }, (i + 1) * SortingVisualiser.ANIMATION_TIME);
@@ -180,11 +180,9 @@ export default class SortingVisualiser extends React.Component<
     }
 
     visualiseQuickSort(): void {
-        console.log('HI');
         const [animations, sortedArray] = getQuickSortAnimations(
             this.state.currArray
         );
-        console.log(sortedArray);
         this.processAnimations(animations, sortedArray);
     }
 
@@ -271,7 +269,7 @@ export default class SortingVisualiser extends React.Component<
                         className="array-bar"
                         style={{
                             width: `1px`,
-                            height: `700px`,
+                            height: `750px`,
                             backgroundColor: background
                         }}></span>
                     {currArray.map((value, idx) => {
