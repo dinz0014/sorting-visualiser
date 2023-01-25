@@ -20,7 +20,6 @@ export default class SortingVisualiser extends React.Component<
 > {
     // Default properties. TODO: Pull these from a config file of sorts
     static defaultProps = {
-        size: 50,
         min: 10,
         max: 700,
         width: window.innerWidth,
@@ -36,7 +35,8 @@ export default class SortingVisualiser extends React.Component<
         super(props);
 
         this.state = {
-            currArray: []
+            currArray: [],
+            size: 175
         };
     }
 
@@ -53,21 +53,21 @@ export default class SortingVisualiser extends React.Component<
     // Revert any sorting that has been done on the array
     revertArray(): void {
         let currArray: number[] = Object.assign([], this.originalArray);
-        this.setState({ currArray });
+        this.setState({ currArray, size: this.originalArray.length });
     }
 
     // Generates the array of random numbers to be sorted
     generateArray(): void {
         const currArray: number[] = [];
 
-        for (let i = 0; i < this.props.size; i++) {
+        for (let i = 0; i < this.state.size; i++) {
             currArray.push(
                 this.randomNumBetween(this.props.min, this.props.max)
             );
         }
 
         this.originalArray = Object.assign([], currArray);
-        this.setState({ currArray });
+        this.setState({ currArray, size: this.state.size });
     }
 
     // Process an array of animations
@@ -141,7 +141,10 @@ export default class SortingVisualiser extends React.Component<
             // At the end of all animations, change the state with new sorted array
             if (i === animations.length - 1) {
                 setTimeout(() => {
-                    this.setState({ currArray: sortedArray });
+                    this.setState({
+                        currArray: sortedArray,
+                        size: sortedArray.length
+                    });
                 }, (i + 1) * SortingVisualiser.ANIMATION_TIME);
             }
         }
@@ -213,7 +216,7 @@ export default class SortingVisualiser extends React.Component<
         const currArray = this.state.currArray;
         const width = this.props.width;
         const height = this.props.height;
-        const barWidth = (width * 0.8) / this.props.size - 1;
+        const barWidth = (width * 0.8) / this.state.currArray.length - 1;
 
         // Renders the array bars and sets their relevant style attributes
         return (
