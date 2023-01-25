@@ -4,6 +4,7 @@ import {
     getBubbleSortAnimations,
     getOptimisedBubbleSortAnimations
 } from '../sortingAlgorithms/bubbleSort';
+import { getHeapSortAnimations } from '../sortingAlgorithms/heapSort';
 import getIterativeMergeSortAnimations from '../sortingAlgorithms/iterativeMergeSort';
 import { getQuickSortAnimations } from '../sortingAlgorithms/quickSort';
 import getSelectionSortAnimations from '../sortingAlgorithms/selectionSort';
@@ -186,6 +187,13 @@ export default class SortingVisualiser extends React.Component<
         this.processAnimations(animations, sortedArray);
     }
 
+    visualiseHeapSort(): void {
+        const [animations, sortedArray] = getHeapSortAnimations(
+            this.state.currArray
+        );
+        this.processAnimations(animations, sortedArray);
+    }
+
     // Renders the component to be viewed
     render(): React.ReactNode {
         // Calculates margins and bar width
@@ -252,6 +260,13 @@ export default class SortingVisualiser extends React.Component<
                             this.visualiseQuickSort();
                         }}>
                         Quick Sort
+                    </button>
+                    <button
+                        className="sorting-button"
+                        onClick={() => {
+                            this.visualiseHeapSort();
+                        }}>
+                        Heap Sort
                     </button>
                 </div>
                 <div
