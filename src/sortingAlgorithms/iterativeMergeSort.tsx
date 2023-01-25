@@ -67,7 +67,11 @@ function merge(
                 animations,
                 left + i,
                 mid + 1 + j,
-                ComparisonType.LTE
+                ComparisonType.LTE,
+                L,
+                R,
+                i,
+                j
             )
         ) {
             replace(array, animations, k++, L[i++]);

@@ -7,7 +7,11 @@ export function compare(
     animations: Animation[],
     i: number,
     j: number,
-    type: ComparisonType
+    type: ComparisonType,
+    array_alt1?: number[],
+    array_alt2?: number[],
+    alt1_idx?: number,
+    alt2_idx?: number
 ): boolean {
     animations.push({
         type: AnimationType.ComparisonOn,
@@ -23,24 +27,41 @@ export function compare(
         colour: primary
     });
 
+    let array1 = array;
+    let array2 = array;
+    let idx1 = i;
+    let idx2 = j;
+
+    if (
+        array_alt1 !== undefined &&
+        array_alt2 !== undefined &&
+        alt1_idx !== undefined &&
+        alt2_idx !== undefined
+    ) {
+        array1 = array_alt1;
+        array2 = array_alt2;
+        idx1 = alt1_idx;
+        idx2 = alt2_idx;
+    }
+
     switch (type) {
         case ComparisonType.EQ:
-            return array[i] === array[j];
+            return array1[idx1] === array2[idx2];
 
         case ComparisonType.NEQ:
-            return array[i] !== array[j];
+            return array1[idx1] !== array2[idx2];
 
         case ComparisonType.GT:
-            return array[i] > array[j];
+            return array1[idx1] > array2[idx2];
 
         case ComparisonType.LT:
-            return array[i] < array[j];
+            return array1[idx1] < array2[idx2];
 
         case ComparisonType.GTE:
-            return array[i] >= array[j];
+            return array1[idx1] >= array2[idx2];
 
         case ComparisonType.LTE:
-            return array[i] <= array[j];
+            return array1[idx1] <= array2[idx2];
     }
 }
 
