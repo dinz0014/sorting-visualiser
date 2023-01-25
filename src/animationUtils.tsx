@@ -2,6 +2,22 @@ import { Animation, AnimationType } from './types/animationTypes';
 import { primary, secondary } from './colours';
 import { ComparisonType } from './types/comparisonTypes';
 
+/*
+This function peforms a comparison between two numbers and adds corresponding animations into an array of animations.
+
+It accepts as input:
+array - the original array of numbers to be sorted
+animations - the array of animations to push animations into
+i - first index in "array" to compare
+j - second index in "array" to compare
+type - the type of comparison to perform
+array_alt1 - an optional argument, for an alternate array of numbers to consider
+array_alt2 - an optional argument, for another alternate array of numbers to consider
+alt1_idx - an optional argument, for an index in "array_alt1" to compare
+alt2_idx - an optional argument, for an index in "array_alt2" to compare
+
+and outputs the result of the comparison.
+*/
 export function compare(
     array: number[],
     animations: Animation[],
@@ -13,6 +29,7 @@ export function compare(
     alt1_idx?: number,
     alt2_idx?: number
 ): boolean {
+    // Push two animations to indicate the start and end of the comparison
     animations.push({
         type: AnimationType.ComparisonOn,
         firstIdx: i,
@@ -32,6 +49,7 @@ export function compare(
     let idx1 = i;
     let idx2 = j;
 
+    // Parse optional arguments and prepare for comparison
     if (
         array_alt1 !== undefined &&
         array_alt2 !== undefined &&
@@ -44,6 +62,7 @@ export function compare(
         idx2 = alt2_idx;
     }
 
+    // Return the result of the comparison
     switch (type) {
         case ComparisonType.EQ:
             return array1[idx1] === array2[idx2];
@@ -65,6 +84,15 @@ export function compare(
     }
 }
 
+/*
+This function performs the swap operation between two indices of the same array and adds corresponding animations into an animations array.
+
+It accepts as input:
+array -  the array of numbers to consider
+animations - the array of animations to push animations into
+i - one index to swap
+j - the other index to swap
+*/
 export function swap(
     array: number[],
     animations: Animation[],
@@ -82,6 +110,15 @@ export function swap(
     [array[i], array[j]] = [array[j], array[i]];
 }
 
+/*
+This function performs a replace operation on the original array and adds the relevant animations into an animations array.
+
+It accepts as input:
+array - the array of numbers to consider
+animations - the array of animations to put animations into
+i - the index at which the replacement will occur
+val - the value which "array[idx]" should be replaced to
+*/
 export function replace(
     array: number[],
     animations: Animation[],

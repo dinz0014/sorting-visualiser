@@ -155,6 +155,7 @@ export default class SortingVisualiser extends React.Component<
         this.processAnimations(animations, sortedArray);
     }
 
+    // Visualises the execution of insertion sort
     visualiseInsertionSort(): void {
         const [animations, sortedArray] = getInsertionSortAnimations(
             this.state.currArray
@@ -180,6 +181,7 @@ export default class SortingVisualiser extends React.Component<
         this.processAnimations(animations, sortedArray);
     }
 
+    // Visualises the execution of merge sort
     visualiseIterativeMergeSort(): void {
         const [animations, sortedArray] = getIterativeMergeSortAnimations(
             this.state.currArray
@@ -188,6 +190,7 @@ export default class SortingVisualiser extends React.Component<
         this.processAnimations(animations, sortedArray);
     }
 
+    // Visualises the execution of quick sort
     visualiseQuickSort(): void {
         const [animations, sortedArray] = getQuickSortAnimations(
             this.state.currArray
@@ -195,6 +198,7 @@ export default class SortingVisualiser extends React.Component<
         this.processAnimations(animations, sortedArray);
     }
 
+    // Visualises the execution of heap sort
     visualiseHeapSort(): void {
         const [animations, sortedArray] = getHeapSortAnimations(
             this.state.currArray

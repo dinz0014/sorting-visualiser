@@ -2,6 +2,11 @@ import { compare, replace } from '../animationUtils';
 import { Animation } from '../types/animationTypes';
 import { ComparisonType } from '../types/comparisonTypes';
 
+/*
+This function performs iterative merge sort on the array of numbers.
+
+It accepts the array to be sorted as the imput, and outputs an array of animations that will visualise the execution of iterative merge sort, as well as the sorted array.
+*/
 export default function getIterativeMergeSortAnimations(
     array: number[]
 ): [Animation[], number[]] {
@@ -33,6 +38,11 @@ export default function getIterativeMergeSortAnimations(
     return [animations, array];
 }
 
+/*
+Helper function for merge sort to perform the merge operation on a specific subarray.
+
+It accepts as input the array of numbers to be sorted, the array of animations to push animations into, the left/mid/right points of the subarray.
+ */
 function merge(
     array: number[],
     animations: Animation[],
@@ -60,7 +70,6 @@ function merge(
 
     // Perform the merge by referencing L and R, and replacing values in the original array
     while (i < l1 && j < l2) {
-        // Push replace animations and replace the values in the original array with merged values
         if (
             compare(
                 array,

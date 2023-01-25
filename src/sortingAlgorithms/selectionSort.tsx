@@ -12,6 +12,7 @@ export default function getSelectionSortAnimations(
 ): [Animation[], number[]] {
     const animations: Animation[] = [];
 
+    // Repeatedly find the minimum element in the unsorted portion of the array and place in the correct spot.
     for (let i = 0; i < array.length; i++) {
         let mindex = i;
 
