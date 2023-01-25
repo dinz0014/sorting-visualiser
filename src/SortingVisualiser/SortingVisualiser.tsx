@@ -5,6 +5,7 @@ import {
     getOptimisedBubbleSortAnimations
 } from '../sortingAlgorithms/bubbleSort';
 import { getHeapSortAnimations } from '../sortingAlgorithms/heapSort';
+import { getInsertionSortAnimations } from '../sortingAlgorithms/insertionSort';
 import getIterativeMergeSortAnimations from '../sortingAlgorithms/iterativeMergeSort';
 import { getQuickSortAnimations } from '../sortingAlgorithms/quickSort';
 import getSelectionSortAnimations from '../sortingAlgorithms/selectionSort';
@@ -154,6 +155,13 @@ export default class SortingVisualiser extends React.Component<
         this.processAnimations(animations, sortedArray);
     }
 
+    visualiseInsertionSort(): void {
+        const [animations, sortedArray] = getInsertionSortAnimations(
+            this.state.currArray
+        );
+        this.processAnimations(animations, sortedArray);
+    }
+
     // Visualises the execution of bubble sort
     visualiseBubbleSort(): void {
         const [animations, sortedArray] = getBubbleSortAnimations(
@@ -232,6 +240,13 @@ export default class SortingVisualiser extends React.Component<
                             this.visualiseSelectionSort();
                         }}>
                         Selection Sort
+                    </button>
+                    <button
+                        className="sorting-button"
+                        onClick={() => {
+                            this.visualiseInsertionSort();
+                        }}>
+                        Insertion Sort
                     </button>
                     <button
                         className="sorting-button"
