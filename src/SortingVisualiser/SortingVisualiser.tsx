@@ -26,7 +26,7 @@ export default class SortingVisualiser extends React.Component<
         height: window.innerHeight
     };
 
-    static ANIMATION_TIME = 10;
+    static ANIMATION_TIME = 1;
     static CONTROLS_HEIGHT = 80;
     originalArray: number[] = [];
 
@@ -209,6 +209,18 @@ export default class SortingVisualiser extends React.Component<
         this.processAnimations(animations, sortedArray);
     }
 
+    sizeSliderChangeHandler(event: any): void {
+        this.setState(
+            {
+                currArray: this.state.currArray,
+                size: event.target.value
+            },
+            () => {
+                this.generateArray();
+            }
+        );
+    }
+
     // Renders the component to be viewed
     render(): React.ReactNode {
         // Calculates margins and bar width
@@ -220,85 +232,96 @@ export default class SortingVisualiser extends React.Component<
 
         // Renders the array bars and sets their relevant style attributes
         return (
-            <div>
+            <div className="content">
                 <div
                     className="control-bar"
                     style={{
-                        backgroundColor: background,
-                        height: `${SortingVisualiser.CONTROLS_HEIGHT}px`
+                        backgroundColor: background
                     }}>
-                    <button
-                        className="array-button"
-                        onClick={() => {
-                            this.revertArray();
-                        }}>
-                        Undo Sorting
-                    </button>
-                    <button
-                        className="array-button"
-                        onClick={() => {
-                            this.generateArray();
-                        }}>
-                        Generate New Array
-                    </button>
-                    <button
-                        className="sorting-button"
-                        onClick={() => {
-                            this.visualiseSelectionSort();
-                        }}>
-                        Selection Sort
-                    </button>
-                    <button
-                        className="sorting-button"
-                        onClick={() => {
-                            this.visualiseInsertionSort();
-                        }}>
-                        Insertion Sort
-                    </button>
-                    <button
-                        className="sorting-button"
-                        onClick={() => {
-                            this.visualiseBubbleSort();
-                        }}>
-                        Bubble Sort
-                    </button>
-                    <button
-                        className="sorting-button"
-                        onClick={() => {
-                            this.visualiseOptimisedBubbleSort();
-                        }}>
-                        Optimised Bubble Sort
-                    </button>
-                    <button
-                        className="sorting-button"
-                        onClick={() => {
-                            this.visualiseIterativeMergeSort();
-                        }}>
-                        Merge Sort
-                    </button>
-                    <button
-                        className="sorting-button"
-                        onClick={() => {
-                            this.visualiseQuickSort();
-                        }}>
-                        Quick Sort
-                    </button>
-                    <button
-                        className="sorting-button"
-                        onClick={() => {
-                            this.visualiseHeapSort();
-                        }}>
-                        Heap Sort
-                    </button>
+                    <div className="size-slider">
+                        <input
+                            type="range"
+                            min="50"
+                            max="300"
+                            defaultValue={this.state.size}
+                            id="sizeSlider"
+                            onChange={(event) => {
+                                this.sizeSliderChangeHandler(event);
+                            }}></input>
+                        <p id="sizeValue">Array size: {this.state.size}</p>
+                    </div>
+                    <div className="button-row">
+                        <button
+                            className="array-button"
+                            onClick={() => {
+                                this.revertArray();
+                            }}>
+                            Undo Sorting
+                        </button>
+                        <button
+                            className="array-button"
+                            onClick={() => {
+                                this.generateArray();
+                            }}>
+                            Generate New Array
+                        </button>
+                        <button
+                            className="sorting-button"
+                            onClick={() => {
+                                this.visualiseSelectionSort();
+                            }}>
+                            Selection Sort
+                        </button>
+                        <button
+                            className="sorting-button"
+                            onClick={() => {
+                                this.visualiseInsertionSort();
+                            }}>
+                            Insertion Sort
+                        </button>
+                        <button
+                            className="sorting-button"
+                            onClick={() => {
+                                this.visualiseBubbleSort();
+                            }}>
+                            Bubble Sort
+                        </button>
+                        <button
+                            className="sorting-button"
+                            onClick={() => {
+                                this.visualiseOptimisedBubbleSort();
+                            }}>
+                            Optimised Bubble Sort
+                        </button>
+                        <button
+                            className="sorting-button"
+                            onClick={() => {
+                                this.visualiseIterativeMergeSort();
+                            }}>
+                            Merge Sort
+                        </button>
+                        <button
+                            className="sorting-button"
+                            onClick={() => {
+                                this.visualiseQuickSort();
+                            }}>
+                            Quick Sort
+                        </button>
+                        <button
+                            className="sorting-button"
+                            onClick={() => {
+                                this.visualiseHeapSort();
+                            }}>
+                            Heap Sort
+                        </button>
+                    </div>
                 </div>
                 <div
                     className="array-container"
                     style={{
                         backgroundColor: background,
                         width: `100%`,
-                        height: `${
-                            height - SortingVisualiser.CONTROLS_HEIGHT
-                        }px`
+                        overflow: 'auto'
                     }}>
                     {/*Hacky way to get the array bars to be positioned exactly the same vertically no matter what the array is. Forces a dummy span element
                     which has the maximum height possible for a bar. This forces all of the array bars to be aligned to the bottom of this dummy bar. */}
