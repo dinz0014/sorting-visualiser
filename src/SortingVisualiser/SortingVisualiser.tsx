@@ -99,7 +99,6 @@ export default class SortingVisualiser extends React.Component<
                         setTimeout(() => {
                             firstStyle.backgroundColor = animation.colour;
                             secondStyle.backgroundColor = animation.colour;
-                            console.log('still going');
                         }, i * SortingVisualiser.ANIMATION_TIME)
                     );
 
