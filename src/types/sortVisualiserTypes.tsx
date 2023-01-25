@@ -1,5 +1,4 @@
 export type SortVizProps = {
-    size: number;
     min: number;
     max: number;
     width: number;
@@ -8,4 +7,5 @@ export type SortVizProps = {
 
 export type SortVizState = {
     currArray: number[];
+    size: number;
 };
