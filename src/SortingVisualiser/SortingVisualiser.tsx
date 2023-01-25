@@ -29,6 +29,7 @@ export default class SortingVisualiser extends React.Component<
     static ANIMATION_TIME = 1;
     static CONTROLS_HEIGHT = 80;
     originalArray: number[] = [];
+    timeOuts: NodeJS.Timeout[] = [];
 
     // Constructor
     constructor(props: SortVizProps) {
@@ -59,6 +60,9 @@ export default class SortingVisualiser extends React.Component<
     // Generates the array of random numbers to be sorted
     generateArray(): void {
         const currArray: number[] = [];
+        this.timeOuts.map((timeOut) => {
+            clearTimeout(timeOut);
+        });
 
         for (let i = 0; i < this.state.size; i++) {
             currArray.push(
@@ -91,10 +95,13 @@ export default class SortingVisualiser extends React.Component<
                         break;
                     }
 
-                    setTimeout(() => {
-                        firstStyle.backgroundColor = animation.colour;
-                        secondStyle.backgroundColor = animation.colour;
-                    }, i * SortingVisualiser.ANIMATION_TIME);
+                    this.timeOuts.push(
+                        setTimeout(() => {
+                            firstStyle.backgroundColor = animation.colour;
+                            secondStyle.backgroundColor = animation.colour;
+                            console.log('still going');
+                        }, i * SortingVisualiser.ANIMATION_TIME)
+                    );
 
                     break;
 
@@ -114,10 +121,12 @@ export default class SortingVisualiser extends React.Component<
                         break;
                     }
 
-                    setTimeout(() => {
-                        firstBarStyle.height = `${animation.firstValue}px`;
-                        secondBarStyle.height = `${animation.secondValue}px`;
-                    }, i * SortingVisualiser.ANIMATION_TIME);
+                    this.timeOuts.push(
+                        setTimeout(() => {
+                            firstBarStyle.height = `${animation.firstValue}px`;
+                            secondBarStyle.height = `${animation.secondValue}px`;
+                        }, i * SortingVisualiser.ANIMATION_TIME)
+                    );
 
                     break;
 
@@ -131,21 +140,25 @@ export default class SortingVisualiser extends React.Component<
                         break;
                     }
 
-                    setTimeout(() => {
-                        barStyle.height = `${animation.value}px`;
-                    }, i * SortingVisualiser.ANIMATION_TIME);
+                    this.timeOuts.push(
+                        setTimeout(() => {
+                            barStyle.height = `${animation.value}px`;
+                        }, i * SortingVisualiser.ANIMATION_TIME)
+                    );
 
                     break;
             }
 
             // At the end of all animations, change the state with new sorted array
             if (i === animations.length - 1) {
-                setTimeout(() => {
-                    this.setState({
-                        currArray: sortedArray,
-                        size: sortedArray.length
-                    });
-                }, (i + 1) * SortingVisualiser.ANIMATION_TIME);
+                this.timeOuts.push(
+                    setTimeout(() => {
+                        this.setState({
+                            currArray: sortedArray,
+                            size: sortedArray.length
+                        });
+                    }, (i + 1) * SortingVisualiser.ANIMATION_TIME)
+                );
             }
         }
     }
@@ -209,6 +222,7 @@ export default class SortingVisualiser extends React.Component<
         this.processAnimations(animations, sortedArray);
     }
 
+    // Change array size and regenerate array upon slider change
     sizeSliderChangeHandler(event: any): void {
         this.setState(
             {
@@ -224,7 +238,6 @@ export default class SortingVisualiser extends React.Component<
     // Renders the component to be viewed
     render(): React.ReactNode {
         // Calculates margins and bar width
-
         const currArray = this.state.currArray;
         const width = this.props.width;
         const height = this.props.height;
@@ -340,8 +353,7 @@ export default class SortingVisualiser extends React.Component<
                                 key={idx}
                                 style={{
                                     width: `${barWidth}px`,
-                                    height: `${value}px`,
-                                    backgroundColor: primary
+                                    height: `${value}px`
                                 }}></span>
                         );
                     })}
