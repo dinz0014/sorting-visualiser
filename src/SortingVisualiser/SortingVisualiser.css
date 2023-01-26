@@ -7,6 +7,7 @@
     --sort-button-colour: #FBE7C6;
     --stop-button-colour: #ff6e77;
     --background-colour: #242424;
+    --disabled-colour: #878787;
 }
 
 .content{
@@ -15,6 +16,10 @@
     flex-direction: column;
     flex-grow: 1;
     min-height: 100vh;
+}
+
+button:disabled{
+    background-color: var(--disabled-colour);
 }
 
 .control-bar{
@@ -55,6 +60,7 @@ p{
     border: none;
     outline: none;
     opacity: 0.7;
+    transition: all 0.5s ease-out;
   }
 
 
@@ -72,11 +78,20 @@ p{
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 80px;;
+    width: 80px;
+    transition: all 0.75s ease-out;
 }
 
-#stopButton:hover{
+
+#stopButton:hover:enabled{
     box-shadow: 0px 0px 10px 2px var(--stop-button-colour);
+    transition: box-shadow 0.25s;
+}
+
+#stopButton:disabled{
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 0.5s, opacity 0.5s ease-out;
 }
 
 #stopButton span{
@@ -90,6 +105,7 @@ p{
 
 .size-slider input[type="range"]:hover{
     opacity: 1;
+    transition: opacity 0.75s ease-out;
 }
 
 .size-slider input[type="range"]::-webkit-slider-thumb {
@@ -113,11 +129,15 @@ p{
     border-radius: 15px;
     margin-right: 10px;
     margin-top: 10px;
+    transition: all 0.5s ease-out;
 }
 
-.array-button:hover{
+.array-button:hover:enabled{
     box-shadow: 0px 0px 10px 2px var(--arr-button-colour);
+    transition: box-shadow 0.5s ease-out;
 }
+
+
 
 .sort-buttons{
     display: inline-flex;
@@ -136,10 +156,12 @@ p{
     border-radius: 15px;
     margin-right: 10px;
     margin-top: 25px;
+    transition: all 0.75s ease-out;
 }
 
-.sorting-button:hover{
+.sorting-button:hover:enabled{
     box-shadow: 0px 0px 10px 2px var(--sort-button-colour);
+    transition: box-shadow 0.5s ease-out;
 }
 
 .array-container span{
@@ -149,4 +171,5 @@ p{
 .array-bar{
     margin : 0 1px;
     background-color: #A0E7E5;
+    transition: all 0.1s, background-color 0s;
 }
