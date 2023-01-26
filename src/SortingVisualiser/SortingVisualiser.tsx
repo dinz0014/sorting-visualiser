@@ -26,7 +26,7 @@ export default class SortingVisualiser extends React.Component<
         height: window.innerHeight
     };
 
-    ANIMATION_TIME = 2;
+    ANIMATION_TIME = 10;
     originalArray: number[] = [];
     timeOuts: NodeJS.Timeout[] = [];
 
@@ -49,6 +49,11 @@ export default class SortingVisualiser extends React.Component<
     // Utility function to get a random integer between two numbers (inclusive)
     randomNumBetween(start: number, end: number): number {
         return Math.floor(Math.random() * (end - start + 1) + start);
+    }
+
+    // Calculates a reasonable animation time based on the array size
+    getAnimationDelay(): number {
+        return this.ANIMATION_TIME - Math.floor(this.state.size / 100);
     }
 
     // Revert any sorting that has been done on the array
@@ -78,7 +83,7 @@ export default class SortingVisualiser extends React.Component<
         animations.map((val, idx) => {
             setTimeout(() => {
                 this.animate(val);
-            }, idx * this.ANIMATION_TIME);
+            }, idx * this.getAnimationDelay());
         });
     }
 
