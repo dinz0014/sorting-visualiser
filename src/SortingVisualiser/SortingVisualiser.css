@@ -185,10 +185,15 @@ p{
 
 .array-bar{
     margin : 0 1px;
+    margin-top: 30px;
     background-color: #A0E7E5;
     transition: height 0.1s, background-color 0s;
 }
 
 button:disabled{
     background-color: var(--disabled-colour);
+}
+
+button:active{
+    cursor: pointer;
 }
