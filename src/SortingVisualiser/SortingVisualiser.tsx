@@ -10,7 +10,7 @@ import getIterativeMergeSortAnimations from '../sortingAlgorithms/iterativeMerge
 import { getQuickSortAnimations } from '../sortingAlgorithms/quickSort';
 import getSelectionSortAnimations from '../sortingAlgorithms/selectionSort';
 import { Animation, AnimationType } from '../types/animationTypes';
-import { SortVizProps, SortVizState } from '../types/sortVisualiserTypes';
+import { SortVizProps, SortVizState } from '../types/visualiserModelTypes';
 import './SortingVisualiser.css';
 
 // Main component class for Sorting Visualiser
@@ -37,6 +37,7 @@ export default class SortingVisualiser extends React.Component<
 
         this.state = {
             currArray: [],
+            barColours: [],
             size: 175
         };
     }
@@ -54,24 +55,23 @@ export default class SortingVisualiser extends React.Component<
     // Revert any sorting that has been done on the array
     revertArray(): void {
         let currArray: number[] = Object.assign([], this.originalArray);
-        this.setState({ currArray, size: this.originalArray.length });
+        this.setState({ currArray });
     }
 
     // Generates the array of random numbers to be sorted
     generateArray(): void {
         const currArray: number[] = [];
-        this.timeOuts.map((timeOut) => {
-            clearTimeout(timeOut);
-        });
+        const barColours: number[] = [];
 
         for (let i = 0; i < this.state.size; i++) {
             currArray.push(
                 this.randomNumBetween(this.props.min, this.props.max)
             );
+            barColours.push(0);
         }
 
         this.originalArray = Object.assign([], currArray);
-        this.setState({ currArray, size: this.state.size });
+        this.setState({ currArray, barColours });
     }
 
     // Process an array of animations
@@ -237,10 +237,9 @@ export default class SortingVisualiser extends React.Component<
     // Renders the component to be viewed
     render(): React.ReactNode {
         // Calculates margins and bar width
-        const currArray = this.state.currArray;
+        const { currArray, barColours, size } = this.state;
         const width = this.props.width;
-        const height = this.props.height;
-        const barWidth = (width * 0.8) / this.state.currArray.length - 1;
+        const barWidth = (width * 0.8) / size - 1;
 
         // Renders the array bars and sets their relevant style attributes
         return (
@@ -260,7 +259,7 @@ export default class SortingVisualiser extends React.Component<
                             onChange={(event) => {
                                 this.sizeSliderChangeHandler(event);
                             }}></input>
-                        <p id="sizeValue">Array size: {this.state.size}</p>
+                        <p id="sizeValue">Array size: {size}</p>
                     </div>
                     <div className="button-row">
                         <button
@@ -352,7 +351,7 @@ export default class SortingVisualiser extends React.Component<
                                 key={idx}
                                 style={{
                                     width: `${barWidth}px`,
-                                    height: `${value}px`
+                                    backgroundColor:
                                 }}></span>
                         );
                     })}
