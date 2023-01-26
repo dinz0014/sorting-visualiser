@@ -14,21 +14,20 @@ import { SortVizProps, SortVizState } from '../types/visualiserModelTypes';
 import './SortingVisualiser.css';
 
 // Main component class for Sorting Visualiser
-export default class SortingVisualiser extends React.Component<
-    SortVizProps,
-    SortVizState
-> {
+export default class SortingVisualiser extends React.Component<SortVizProps, SortVizState> {
     // Default properties. TODO: Pull these from a config file of sorts
     static defaultProps = {
-        min: 10,
-        max: 1000,
-        width: window.innerWidth,
-        height: window.innerHeight
+        minVal: 10,
+        maxVal: 1000,
+        minSize: 10,
+        maxSize: 300
     };
 
     ANIMATION_TIME = 10;
     originalArray: number[] = [];
-    timeOuts: NodeJS.Timeout[] = [];
+    animationArray: Animation[] = [];
+    currAnimIndex: number = 0;
+    animationIntervalID?: ReturnType<typeof setInterval>;
 
     // Constructor
     constructor(props: SortVizProps) {
@@ -37,7 +36,8 @@ export default class SortingVisualiser extends React.Component<
         this.state = {
             currArray: [],
             barColours: [],
-            size: 175
+            size: Math.floor((props.maxSize + props.minSize) / 2),
+            isSorting: false
         };
     }
 
@@ -56,61 +56,83 @@ export default class SortingVisualiser extends React.Component<
         return this.ANIMATION_TIME - Math.floor(this.state.size / 100);
     }
 
+    // Change array size and regenerate array upon slider change
+    sizeSliderChangeHandler(event: any): void {
+        this.setState(
+            {
+                size: event.target.value
+            },
+            () => {
+                this.generateArray();
+            }
+        );
+    }
+
     // Revert any sorting that has been done on the array
     revertArray(): void {
+        this.stopAnimations();
+        this.revertBarColours();
+
         let currArray: number[] = Object.assign([], this.originalArray);
         this.setState({ currArray });
+    }
+
+    // Reverts the barColours back to default
+    revertBarColours(): void {
+        const barColours: number[] = [];
+        for (let i = 0; i < this.state.size; i++) {
+            barColours.push(0);
+        }
+        this.setState({ barColours });
     }
 
     // Generates the array of random numbers to be sorted
     generateArray(): void {
         const currArray: number[] = [];
-        const barColours: number[] = [];
+        this.stopAnimations();
 
         for (let i = 0; i < this.state.size; i++) {
-            currArray.push(
-                this.randomNumBetween(this.props.min, this.props.max)
-            );
-            barColours.push(0);
+            currArray.push(this.randomNumBetween(this.props.minVal, this.props.maxVal));
         }
 
         this.originalArray = Object.assign([], currArray);
-        this.setState({ currArray, barColours });
+        this.setState({ currArray });
     }
 
     // Process the animations in an array of animations
-    processAnimations(animations: Animation[]) {
-        animations.map((val, idx) => {
-            setTimeout(() => {
-                this.animate(val);
-            }, idx * this.getAnimationDelay());
-        });
+    processAnimations(): void {
+        this.currAnimIndex = 0;
+        this.animationIntervalID = setInterval(() => {
+            this.animate();
+        }, this.getAnimationDelay());
     }
 
     // Process a single animation
-    animate(animation: Animation) {
+    animate(): void {
+        if (this.currAnimIndex === this.animationArray.length) {
+            this.stopAnimations();
+            this.animationArray = [];
+            return;
+        }
+
+        const animation: Animation = this.animationArray[this.currAnimIndex++];
         const { type } = animation;
 
         // Switch based on animation type
-        if (
-            type === AnimationType.ComparisonOff ||
-            type === AnimationType.ComparisonOn
-        ) {
+        if (type === AnimationType.ComparisonOff || type === AnimationType.ComparisonOn) {
             const { firstIdx, secondIdx } = animation;
 
             // Set all other bars to default colour, set the compared bars to red colour
-            const barColours: number[] = this.state.barColours.map(
-                (_val, idx) => {
-                    if (
-                        (idx === firstIdx || idx === secondIdx) &&
-                        type === AnimationType.ComparisonOn
-                    ) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
+            const barColours: number[] = this.state.barColours.map((_val, idx) => {
+                if (
+                    (idx === firstIdx || idx === secondIdx) &&
+                    type === AnimationType.ComparisonOn
+                ) {
+                    return 1;
+                } else {
+                    return 0;
                 }
-            );
+            });
 
             this.setState({ barColours });
         } else if (type === AnimationType.Swap) {
@@ -131,79 +153,51 @@ export default class SortingVisualiser extends React.Component<
         }
     }
 
-    // Visualises the execution of selection sort
-    visualiseSelectionSort(): void {
-        const animations = getSelectionSortAnimations([
-            ...this.state.currArray
-        ]);
-
-        this.processAnimations(animations);
+    // Stop the animations and set all colours back to default
+    stopAnimations(): void {
+        this.revertBarColours();
+        if (this.animationIntervalID !== undefined) {
+            clearInterval(this.animationIntervalID);
+            this.setState({ isSorting: false });
+        }
     }
 
-    // Visualises the execution of insertion sort
-    visualiseInsertionSort(): void {
-        const animations = getInsertionSortAnimations([
-            ...this.state.currArray
-        ]);
-        this.processAnimations(animations);
-    }
+    // Visualises the sorting with the help of a type that is passed in as a string
+    visualiseSort(sortType: string): void {
+        this.setState({ isSorting: true });
 
-    // Visualises the execution of bubble sort
-    visualiseBubbleSort(): void {
-        const animations = getBubbleSortAnimations([...this.state.currArray]);
+        switch (sortType) {
+            case 'select':
+                this.animationArray = getSelectionSortAnimations([...this.state.currArray]);
+                break;
+            case 'insert':
+                this.animationArray = getInsertionSortAnimations([...this.state.currArray]);
+                break;
+            case 'bubble':
+                this.animationArray = getBubbleSortAnimations([...this.state.currArray]);
+                break;
+            case 'opt_bubble':
+                this.animationArray = getOptimisedBubbleSortAnimations([...this.state.currArray]);
+                break;
+            case 'merge':
+                this.animationArray = getIterativeMergeSortAnimations([...this.state.currArray]);
+                break;
+            case 'quick':
+                this.animationArray = getQuickSortAnimations([...this.state.currArray]);
+                break;
+            case 'heap':
+                this.animationArray = getHeapSortAnimations([...this.state.currArray]);
+                break;
+        }
 
-        this.processAnimations(animations);
-    }
-
-    // Visualises the execution of optimised bubble sort
-    visualiseOptimisedBubbleSort(): void {
-        const animations = getOptimisedBubbleSortAnimations([
-            ...this.state.currArray
-        ]);
-
-        this.processAnimations(animations);
-    }
-
-    // Visualises the execution of merge sort
-    visualiseIterativeMergeSort(): void {
-        const animations = getIterativeMergeSortAnimations([
-            ...this.state.currArray
-        ]);
-
-        this.processAnimations(animations);
-    }
-
-    // Visualises the execution of quick sort
-    visualiseQuickSort(): void {
-        const animations = getQuickSortAnimations([...this.state.currArray]);
-
-        this.processAnimations(animations);
-    }
-
-    // Visualises the execution of heap sort
-    visualiseHeapSort(): void {
-        const animations = getHeapSortAnimations([...this.state.currArray]);
-
-        this.processAnimations(animations);
-    }
-
-    // Change array size and regenerate array upon slider change
-    sizeSliderChangeHandler(event: any): void {
-        this.setState(
-            {
-                size: event.target.value
-            },
-            () => {
-                this.generateArray();
-            }
-        );
+        this.processAnimations();
     }
 
     // Renders the component to be viewed
     render(): React.ReactNode {
         // Calculates margins and bar width
-        const { currArray, barColours, size } = this.state;
-        const width = this.props.width;
+        const { currArray, barColours, size, isSorting } = this.state;
+        const width = window.innerWidth;
         const barWidth = (width * 0.8) / size - 1;
 
         // Renders the array bars and sets their relevant style attributes
@@ -214,81 +208,116 @@ export default class SortingVisualiser extends React.Component<
                     style={{
                         backgroundColor: background
                     }}>
-                    <div className="size-slider">
-                        <input
-                            type="range"
-                            min="10"
-                            max="300"
-                            id="sizeSlider"
-                            onChange={(event) => {
-                                this.sizeSliderChangeHandler(event);
-                            }}></input>
-                        <p id="sizeValue">Array size: {size}</p>
+                    <div className="array-controls">
+                        <div className="size-slider">
+                            <p id="sizeValue">Array size: {size}</p>
+                            <input
+                                type="range"
+                                min={`${this.props.minSize}`}
+                                max={`${this.props.maxSize}`}
+                                defaultValue={`${this.state.size}`}
+                                id="sizeSlider"
+                                disabled={isSorting}
+                                onChange={(event) => {
+                                    this.sizeSliderChangeHandler(event);
+                                }}></input>
+                        </div>
+                        <div className="arr-buttons">
+                            <button
+                                className="array-button"
+                                onClick={() => {
+                                    this.revertArray();
+                                }}>
+                                Undo Sorting
+                            </button>
+                            <button
+                                className="array-button"
+                                onClick={() => {
+                                    this.generateArray();
+                                }}>
+                                Generate New Array
+                            </button>
+                            <button
+                                className="array-button"
+                                disabled={!isSorting}
+                                onClick={() => {
+                                    this.stopAnimations();
+                                }}
+                                id="stopButton">
+                                <span className="material-symbols-rounded">Stop</span>
+                                <span>Stop</span>
+                            </button>
+                        </div>
                     </div>
-                    <div className="button-row">
-                        <button
-                            className="array-button"
-                            onClick={() => {
-                                this.revertArray();
-                            }}>
-                            Undo Sorting
-                        </button>
-                        <button
-                            className="array-button"
-                            onClick={() => {
-                                this.generateArray();
-                            }}>
-                            Generate New Array
-                        </button>
-                        <button
-                            className="sorting-button"
-                            onClick={() => {
-                                this.visualiseSelectionSort();
-                            }}>
-                            Selection Sort
-                        </button>
-                        <button
-                            className="sorting-button"
-                            onClick={() => {
-                                this.visualiseInsertionSort();
-                            }}>
-                            Insertion Sort
-                        </button>
-                        <button
-                            className="sorting-button"
-                            onClick={() => {
-                                this.visualiseBubbleSort();
-                            }}>
-                            Bubble Sort
-                        </button>
-                        <button
-                            className="sorting-button"
-                            onClick={() => {
-                                this.visualiseOptimisedBubbleSort();
-                            }}>
-                            Optimised Bubble Sort
-                        </button>
-                        <button
-                            className="sorting-button"
-                            onClick={() => {
-                                this.visualiseIterativeMergeSort();
-                            }}>
-                            Merge Sort
-                        </button>
-                        <button
-                            className="sorting-button"
-                            onClick={() => {
-                                this.visualiseQuickSort();
-                            }}>
-                            Quick Sort
-                        </button>
-                        <button
-                            className="sorting-button"
-                            onClick={() => {
-                                this.visualiseHeapSort();
-                            }}>
-                            Heap Sort
-                        </button>
+                    <div className="sort-buttons">
+                        <div>
+                            <button
+                                className="sorting-button"
+                                disabled={isSorting}
+                                onClick={() => {
+                                    this.visualiseSort('select');
+                                }}>
+                                Selection Sort
+                            </button>
+                            <button
+                                className="sorting-button"
+                                disabled={isSorting}
+                                onClick={() => {
+                                    this.visualiseSort('insert');
+                                }}>
+                                Insertion Sort
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                                className="sorting-button"
+                                disabled={isSorting}
+                                onClick={() => {
+                                    this.visualiseSort('bubble');
+                                }}>
+                                Bubble Sort
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                                className="sorting-button"
+                                disabled={isSorting}
+                                onClick={() => {
+                                    this.visualiseSort('opt_bubble');
+                                }}>
+                                Optimised Bubble Sort
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                                className="sorting-button"
+                                disabled={isSorting}
+                                onClick={() => {
+                                    this.visualiseSort('merge');
+                                }}>
+                                Merge Sort
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                                className="sorting-button"
+                                disabled={isSorting}
+                                onClick={() => {
+                                    this.visualiseSort('quick');
+                                }}>
+                                Quick Sort
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                                className="sorting-button"
+                                disabled={isSorting}
+                                onClick={() => {
+                                    this.visualiseSort('heap');
+                                }}>
+                                Heap Sort
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div
@@ -304,7 +333,7 @@ export default class SortingVisualiser extends React.Component<
                         className="array-bar"
                         style={{
                             width: `1px`,
-                            height: `${this.props.max * 0.8}px`,
+                            height: `${this.props.maxVal * 0.8}px`,
                             backgroundColor: background
                         }}></span>
                     {currArray.map((value, idx) => {
@@ -316,10 +345,7 @@ export default class SortingVisualiser extends React.Component<
                                 style={{
                                     width: `${barWidth}px`,
                                     height: `${value * 0.8}px`,
-                                    backgroundColor:
-                                        barColours[idx] === 1
-                                            ? secondary
-                                            : primary
+                                    backgroundColor: barColours[idx] === 1 ? secondary : primary
                                 }}></span>
                         );
                     })}

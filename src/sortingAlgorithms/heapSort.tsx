@@ -37,29 +37,18 @@ This function sifts a heap root down until it is at the correct place.
 
 It accepts as input the array of numbers to be sorted, an array of animations to push animations into, the root index as well as the end of the heap in the original array.
 */
-function siftDown(
-    array: number[],
-    animations: Animation[],
-    root: number,
-    end: number
-): void {
+function siftDown(array: number[], animations: Animation[], root: number, end: number): void {
     // See if "root" has any children.
     while (2 * root + 1 <= end) {
         let child = 2 * root + 1;
         let swapWith = root;
 
         // Check which child is greater so that "root" can be swapped with that child to help achieve the heap invariant
-        if (
-            child <= end &&
-            compare(array, animations, swapWith, child, ComparisonType.LT)
-        ) {
+        if (child <= end && compare(array, animations, swapWith, child, ComparisonType.LT)) {
             swapWith = child;
         }
 
-        if (
-            ++child <= end &&
-            compare(array, animations, swapWith, child, ComparisonType.LT)
-        ) {
+        if (++child <= end && compare(array, animations, swapWith, child, ComparisonType.LT)) {
             swapWith = child;
         }
 

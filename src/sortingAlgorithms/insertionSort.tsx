@@ -14,10 +14,7 @@ export function getInsertionSortAnimations(array: number[]): Animation[] {
     for (let i = 1; i < array.length; i++) {
         let j = i;
         // Repeatedly swap the current element with the element before it if they are out of order
-        while (
-            j >= 0 &&
-            compare(array, animations, j - 1, j, ComparisonType.GT)
-        ) {
+        while (j >= 0 && compare(array, animations, j - 1, j, ComparisonType.GT)) {
             swap(array, animations, j, --j);
         }
     }

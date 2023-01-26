@@ -5,7 +5,9 @@
 :root {
     --arr-button-colour:  #B4F8C8;
     --sort-button-colour: #FBE7C6;
+    --stop-button-colour: #ff6e77;
     --background-colour: #242424;
+    --disabled-colour: #878787;
 }
 
 .content{
@@ -16,45 +18,96 @@
     min-height: 100vh;
 }
 
+button:disabled{
+    background-color: var(--disabled-colour);
+}
+
 .control-bar{
     background-color: var(--background-colour);
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-grow: 1;
-}
-
-.size-slider{
-    font-size: 20px;
-    font-weight: 500;
-    color: white;
-    align-items: center;
-    background-color: var(--background-colour);
-}
-
-.size-slider input[type="range"] {
-    -webkit-appearance:none !important;
-    appearance: none;
-    width: 420px;
-    height: 2px;
-    background: white;
-    align-self: center;
-    border: none;
-    outline: none;
-    opacity: 0.7;
-  }
-
-.control-bar{
-    overflow:auto;
     padding-bottom: 10px;
-    flex-grow: 1;
 }
 
 .array-container{
     flex-grow: 4;
 }
 
-.size-slider input[type="range"]:hover{
+.array-controls{
+    padding-left: 20px;
+}
+
+p{
+    margin: 0px;
+}
+.size-slider{
+    font-size: 20px;
+    font-weight: 500;
+    color: white;
+    align-items: center;
+    margin: 10px;
+    padding-left: 45px;
+    background-color: var(--background-colour);
+}
+
+.size-slider input[type="range"] {
+    -webkit-appearance:none !important;
+    appearance: none;
+    width: 350px;
+    height: 2px;
+    background: white;
+    align-self: center;
+    border: none;
+    outline: none;
+    opacity: 0.5;
+    transition: all 0.5s ease-out;
+  }
+
+
+.material-symbols-rounded {
+    font-variation-settings:
+    'FILL' 1,
+    'wght' 700,
+    'GRAD' 200,
+    'opsz' 48;
+    margin-right: auto;
+}
+
+#stopButton{
+    background-color: var(--stop-button-colour);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    transition: all 0.75s ease-out;
+}
+
+
+#stopButton:hover:enabled{
+    box-shadow: 0px 0px 10px 2px var(--stop-button-colour);
+    transition: box-shadow 0.25s;
+}
+
+#stopButton:disabled{
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 0s 0.5s, opacity 0.5s ease-out;
+}
+
+#stopButton span{
+    margin-right: auto;
+}
+
+.arr-buttons{
+    flex-grow: 1;
+    padding-left: 50px;
+    display: inline-flex;
+}
+
+.size-slider input[type="range"]:hover:enabled{
     opacity: 1;
+    transition: opacity 0.75s ease-out;
 }
 
 .size-slider input[type="range"]::-webkit-slider-thumb {
@@ -77,10 +130,21 @@
     border-style: solid;
     border-radius: 15px;
     margin-right: 10px;
+    margin-top: 10px;
+    transition: all 0.5s ease-out;
 }
 
-.array-button:hover{
+.array-button:hover:enabled{
     box-shadow: 0px 0px 10px 2px var(--arr-button-colour);
+    transition: box-shadow 0.5s ease-out;
+}
+
+
+
+.sort-buttons{
+    display: inline-flex;
+    justify-content: center;
+    flex-grow: 3
 }
 
 .sorting-button{
@@ -93,10 +157,13 @@
     border-style: solid;
     border-radius: 15px;
     margin-right: 10px;
+    margin-top: 25px;
+    transition: all 0.75s ease-out;
 }
 
-.sorting-button:hover{
+.sorting-button:hover:enabled{
     box-shadow: 0px 0px 10px 2px var(--sort-button-colour);
+    transition: box-shadow 0.5s ease-out;
 }
 
 .array-container span{
@@ -106,4 +173,5 @@
 .array-bar{
     margin : 0 1px;
     background-color: #A0E7E5;
+    transition: height 0.1s, background-color 0s;
 }
