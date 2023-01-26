@@ -26,8 +26,7 @@ export default class SortingVisualiser extends React.Component<
         height: window.innerHeight
     };
 
-    static ANIMATION_TIME = 2;
-    static CONTROLS_HEIGHT = 80;
+    ANIMATION_TIME = 2;
     originalArray: number[] = [];
     timeOuts: NodeJS.Timeout[] = [];
 
@@ -79,7 +78,7 @@ export default class SortingVisualiser extends React.Component<
         animations.map((val, idx) => {
             setTimeout(() => {
                 this.animate(val);
-            }, idx * SortingVisualiser.ANIMATION_TIME);
+            }, idx * this.ANIMATION_TIME);
         });
     }
 
