@@ -35,7 +35,7 @@ button:disabled{
 }
 
 .array-controls{
-    margin-left: 10px;
+    padding-left: 20px;
 }
 
 p{
@@ -47,6 +47,7 @@ p{
     color: white;
     align-items: center;
     margin: 10px;
+    padding-left: 45px;
     background-color: var(--background-colour);
 }
 
@@ -59,7 +60,7 @@ p{
     align-self: center;
     border: none;
     outline: none;
-    opacity: 0.7;
+    opacity: 0.5;
     transition: all 0.5s ease-out;
   }
 
@@ -100,10 +101,11 @@ p{
 
 .arr-buttons{
     flex-grow: 1;
+    padding-left: 50px;
     display: inline-flex;
 }
 
-.size-slider input[type="range"]:hover{
+.size-slider input[type="range"]:hover:enabled{
     opacity: 1;
     transition: opacity 0.75s ease-out;
 }
@@ -171,5 +173,5 @@ p{
 .array-bar{
     margin : 0 1px;
     background-color: #A0E7E5;
-    transition: all 0.1s, background-color 0s;
+    transition: height 0.1s, background-color 0s;
 }
