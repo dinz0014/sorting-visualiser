@@ -5,6 +5,7 @@
 :root {
     --arr-button-colour:  #B4F8C8;
     --sort-button-colour: #FBE7C6;
+    --stop-button-colour: #ff6e77;
     --background-colour: #242424;
 }
 
@@ -19,22 +20,35 @@
 .control-bar{
     background-color: var(--background-colour);
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     flex-grow: 1;
+    padding-bottom: 10px;
 }
 
+.array-container{
+    flex-grow: 4;
+}
+
+.array-controls{
+    margin-left: 10px;
+}
+
+p{
+    margin: 0px;
+}
 .size-slider{
     font-size: 20px;
     font-weight: 500;
     color: white;
     align-items: center;
+    margin: 10px;
     background-color: var(--background-colour);
 }
 
 .size-slider input[type="range"] {
     -webkit-appearance:none !important;
     appearance: none;
-    width: 420px;
+    width: 350px;
     height: 2px;
     background: white;
     align-self: center;
@@ -43,14 +57,10 @@
     opacity: 0.7;
   }
 
-.control-bar{
-    overflow:auto;
-    padding-bottom: 10px;
-    flex-grow: 1;
-}
 
-.array-container{
-    flex-grow: 4;
+
+.array-buttons{
+    flex-grow: 1;
 }
 
 .size-slider input[type="range"]:hover{
@@ -77,10 +87,25 @@
     border-style: solid;
     border-radius: 15px;
     margin-right: 10px;
+    margin-top: 10px;
 }
 
 .array-button:hover{
     box-shadow: 0px 0px 10px 2px var(--arr-button-colour);
+}
+
+#stopButton{
+    background-color: var(--stop-button-colour) ;
+}
+
+#stopButton:hover{
+    box-shadow: 0px 0px 10px 2px var(--stop-button-colour);
+}
+
+.sort-buttons{
+    display: inline-flex;
+    justify-content: center;
+    flex-grow: 3
 }
 
 .sorting-button{
@@ -93,6 +118,7 @@
     border-style: solid;
     border-radius: 15px;
     margin-right: 10px;
+    margin-top: 25px;
 }
 
 .sorting-button:hover{

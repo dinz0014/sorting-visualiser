@@ -114,14 +114,14 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
 
             // Set all other bars to default colour, set the compared bars to red colour
             const barColours: number[] = this.state.barColours.map((_val, idx) => {
-                    if (
-                        (idx === firstIdx || idx === secondIdx) &&
-                        type === AnimationType.ComparisonOn
-                    ) {
-                        return 1;
-                    } else {
-                        return 0;
-                    }
+                if (
+                    (idx === firstIdx || idx === secondIdx) &&
+                    type === AnimationType.ComparisonOn
+                ) {
+                    return 1;
+                } else {
+                    return 0;
+                }
             });
 
             this.setState({ barColours });
@@ -227,84 +227,98 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                         backgroundColor: background
                     }}>
                     <div className="array-controls">
-                    <div className="size-slider">
+                        <div className="size-slider">
                             <p id="sizeValue">Array size: {size}</p>
-                        <input
-                            type="range"
+                            <input
+                                type="range"
                                 min={`${this.props.minSize}`}
                                 max={`${this.props.maxSize}`}
                                 defaultValue={`${this.state.size}`}
-                            id="sizeSlider"
-                            onChange={(event) => {
-                                this.sizeSliderChangeHandler(event);
-                            }}></input>
-                        <p id="sizeValue">Array size: {size}</p>
-                    </div>
-                    <div className="button-row">
-                        <button
-                            className="array-button"
-                            onClick={() => {
-                                this.revertArray();
-                            }}>
-                            Undo Sorting
-                        </button>
-                        <button
-                            className="array-button"
-                            onClick={() => {
-                                this.generateArray();
-                            }}>
-                            Generate New Array
-                        </button>
-                        <button
+                                id="sizeSlider"
+                                onChange={(event) => {
+                                    this.sizeSliderChangeHandler(event);
+                                }}></input>
+                        </div>
+                        <div className="arr-buttons">
+                            <button
                                 className="array-button"
-                            onClick={() => {
+                                onClick={() => {
+                                    this.revertArray();
+                                }}>
+                                Undo Sorting
+                            </button>
+                            <button
+                                className="array-button"
+                                onClick={() => {
+                                    this.generateArray();
+                                }}>
+                                Generate New Array
+                            </button>
+                            <button
+                                className="array-button"
+                                onClick={() => {
                                     this.stopAnimations();
                                 }}
                                 id="stopButton">
                                 Stop
-                        </button>
-                        <button
-                            className="sorting-button"
-                            onClick={() => {
-                                this.visualiseInsertionSort();
-                            }}>
-                            Insertion Sort
-                        </button>
-                        <button
-                            className="sorting-button"
-                            onClick={() => {
-                                this.visualiseBubbleSort();
-                            }}>
-                            Bubble Sort
-                        </button>
-                        <button
-                            className="sorting-button"
-                            onClick={() => {
-                                this.visualiseOptimisedBubbleSort();
-                            }}>
-                            Optimised Bubble Sort
-                        </button>
-                        <button
-                            className="sorting-button"
-                            onClick={() => {
-                                this.visualiseIterativeMergeSort();
-                            }}>
-                            Merge Sort
-                        </button>
-                        <button
-                            className="sorting-button"
-                            onClick={() => {
-                                this.visualiseQuickSort();
-                            }}>
-                            Quick Sort
-                        </button>
-                        <button
-                            className="sorting-button"
-                            onClick={() => {
-                                this.visualiseHeapSort();
-                            }}>
-                            Heap Sort
-                        </button>
+                            </button>
+                        </div>
+                    </div>
+                    <div className="sort-buttons">
+                        <div>
+                            <button
+                                className="sorting-button"
+                                onClick={() => {
+                                    this.visualiseInsertionSort();
+                                }}>
+                                Insertion Sort
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                                className="sorting-button"
+                                onClick={() => {
+                                    this.visualiseBubbleSort();
+                                }}>
+                                Bubble Sort
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                                className="sorting-button"
+                                onClick={() => {
+                                    this.visualiseOptimisedBubbleSort();
+                                }}>
+                                Optimised Bubble Sort
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                                className="sorting-button"
+                                onClick={() => {
+                                    this.visualiseIterativeMergeSort();
+                                }}>
+                                Merge Sort
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                                className="sorting-button"
+                                onClick={() => {
+                                    this.visualiseQuickSort();
+                                }}>
+                                Quick Sort
+                            </button>
+                        </div>
+                        <div>
+                            <button
+                                className="sorting-button"
+                                onClick={() => {
+                                    this.visualiseHeapSort();
+                                }}>
+                                Heap Sort
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div
