@@ -25,7 +25,9 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
 
     ANIMATION_TIME = 10;
     originalArray: number[] = [];
-    timeOuts: NodeJS.Timeout[] = [];
+    animationArray: Animation[] = [];
+    currAnimIndex: number = 0;
+    animationIntervalID?: ReturnType<typeof setInterval>;
 
     // Constructor
     constructor(props: SortVizProps) {
@@ -55,14 +57,28 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
 
     // Revert any sorting that has been done on the array
     revertArray(): void {
+        this.stopAnimations();
+        this.revertBarColours();
+
         let currArray: number[] = Object.assign([], this.originalArray);
         this.setState({ currArray });
+    }
+
+    // Reverts the barColours back to default
+    revertBarColours(): void {
+        const barColours: number[] = [];
+        for (let i = 0; i < this.state.size; i++) {
+            barColours.push(0);
+        }
+        this.setState({ barColours });
     }
 
     // Generates the array of random numbers to be sorted
     generateArray(): void {
         const currArray: number[] = [];
         const barColours: number[] = [];
+
+        this.stopAnimations();
 
         for (let i = 0; i < this.state.size; i++) {
             currArray.push(this.randomNumBetween(this.props.minVal, this.props.maxVal));
@@ -74,16 +90,22 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
     }
 
     // Process the animations in an array of animations
-    processAnimations(animations: Animation[]) {
-        animations.map((val, idx) => {
-            setTimeout(() => {
-                this.animate(val);
-            }, idx * this.getAnimationDelay());
-        });
+    processAnimations(): void {
+        this.animationIntervalID = setInterval(() => {
+            this.animate();
+        }, this.getAnimationDelay());
     }
 
     // Process a single animation
-    animate(animation: Animation) {
+    animate(): void {
+        if (this.currAnimIndex === this.animationArray.length) {
+            this.stopAnimations();
+            this.animationArray = [];
+            this.currAnimIndex = 0;
+            return;
+        }
+
+        const animation: Animation = this.animationArray[this.currAnimIndex++];
         const { type } = animation;
 
         // Switch based on animation type
@@ -121,60 +143,60 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
         }
     }
 
+    // Stop the animations and set all colours back to default
+    stopAnimations(): void {
+        if (this.animationIntervalID !== undefined) {
+            clearInterval(this.animationIntervalID);
+            this.revertBarColours();
+        }
+    }
+
     // Visualises the execution of selection sort
     visualiseSelectionSort(): void {
-        const animations = getSelectionSortAnimations([
-            ...this.state.currArray
-        ]);
+        this.animationArray = getSelectionSortAnimations([...this.state.currArray]);
 
-        this.processAnimations(animations);
+        this.processAnimations();
     }
 
     // Visualises the execution of insertion sort
     visualiseInsertionSort(): void {
-        const animations = getInsertionSortAnimations([
-            ...this.state.currArray
-        ]);
-        this.processAnimations(animations);
+        this.animationArray = getInsertionSortAnimations([...this.state.currArray]);
+        this.processAnimations();
     }
 
     // Visualises the execution of bubble sort
     visualiseBubbleSort(): void {
-        const animations = getBubbleSortAnimations([...this.state.currArray]);
+        this.animationArray = getBubbleSortAnimations([...this.state.currArray]);
 
-        this.processAnimations(animations);
+        this.processAnimations();
     }
 
     // Visualises the execution of optimised bubble sort
     visualiseOptimisedBubbleSort(): void {
-        const animations = getOptimisedBubbleSortAnimations([
-            ...this.state.currArray
-        ]);
+        this.animationArray = getOptimisedBubbleSortAnimations([...this.state.currArray]);
 
-        this.processAnimations(animations);
+        this.processAnimations();
     }
 
     // Visualises the execution of merge sort
     visualiseIterativeMergeSort(): void {
-        const animations = getIterativeMergeSortAnimations([
-            ...this.state.currArray
-        ]);
+        this.animationArray = getIterativeMergeSortAnimations([...this.state.currArray]);
 
-        this.processAnimations(animations);
+        this.processAnimations();
     }
 
     // Visualises the execution of quick sort
     visualiseQuickSort(): void {
-        const animations = getQuickSortAnimations([...this.state.currArray]);
+        this.animationArray = getQuickSortAnimations([...this.state.currArray]);
 
-        this.processAnimations(animations);
+        this.processAnimations();
     }
 
     // Visualises the execution of heap sort
     visualiseHeapSort(): void {
-        const animations = getHeapSortAnimations([...this.state.currArray]);
+        this.animationArray = getHeapSortAnimations([...this.state.currArray]);
 
-        this.processAnimations(animations);
+        this.processAnimations();
     }
 
     // Change array size and regenerate array upon slider change
