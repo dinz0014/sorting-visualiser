@@ -7,9 +7,7 @@ This function performs iterative merge sort on the array of numbers.
 
 It accepts the array to be sorted as the imput, and outputs an array of animations that will visualise the execution of iterative merge sort, as well as the sorted array.
 */
-export default function getIterativeMergeSortAnimations(
-    array: number[]
-): Animation[] {
+export default function getIterativeMergeSortAnimations(array: number[]): Animation[] {
     const animations: Animation[] = [];
     const n = array.length;
     let subSize = 1;
@@ -70,19 +68,7 @@ function merge(
 
     // Perform the merge by referencing L and R, and replacing values in the original array
     while (i < l1 && j < l2) {
-        if (
-            compare(
-                array,
-                animations,
-                left + i,
-                mid + 1 + j,
-                ComparisonType.LTE,
-                L,
-                R,
-                i,
-                j
-            )
-        ) {
+        if (compare(array, animations, left + i, mid + 1 + j, ComparisonType.LTE, L, R, i, j)) {
             replace(array, animations, k++, L[i++]);
         } else {
             replace(array, animations, k++, R[j++]);

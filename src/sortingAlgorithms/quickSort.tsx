@@ -52,12 +52,7 @@ function quickSortHelper(
 This function finds the sorted index of the pivot element. The pivot is found based on the median of 3 method.
 
 */
-function partition(
-    array: number[],
-    animations: Animation[],
-    l: number,
-    r: number
-): number {
+function partition(array: number[], animations: Animation[], l: number, r: number): number {
     // Find median of 3 and put it at index r-1
     threeMedian(array, animations, l, r);
     let i = l,
@@ -84,12 +79,7 @@ function partition(
 /*
 This function sorts the left-most, right-most and central values of a portion of the array to be sorted and puts the median into the pivoting index.
 */
-function threeMedian(
-    array: number[],
-    animations: Animation[],
-    l: number,
-    r: number
-): void {
+function threeMedian(array: number[], animations: Animation[], l: number, r: number): void {
     let mid = Math.floor(l + (r - l) / 2);
 
     // Sort the three values at left pointer, mid pointer and right pointer

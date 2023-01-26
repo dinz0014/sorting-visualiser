@@ -7,9 +7,7 @@ Function that takes in the array of numbers to sort and performs Selection Sort.
 
 This function returns a array of animations which, when processed, display the execution of selection sort, as well as the final sorted array.
 */
-export default function getSelectionSortAnimations(
-    array: number[]
-): Animation[] {
+export default function getSelectionSortAnimations(array: number[]): Animation[] {
     const animations: Animation[] = [];
 
     // Repeatedly find the minimum element in the unsorted portion of the array and place in the correct spot.
