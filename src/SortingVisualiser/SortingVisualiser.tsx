@@ -91,6 +91,8 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
 
     // Process the animations in an array of animations
     processAnimations(): void {
+        this.stopAnimations();
+
         this.animationIntervalID = setInterval(() => {
             this.animate();
         }, this.getAnimationDelay());
@@ -154,7 +156,6 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
     // Visualises the execution of selection sort
     visualiseSelectionSort(): void {
         this.animationArray = getSelectionSortAnimations([...this.state.currArray]);
-
         this.processAnimations();
     }
 
@@ -167,35 +168,30 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
     // Visualises the execution of bubble sort
     visualiseBubbleSort(): void {
         this.animationArray = getBubbleSortAnimations([...this.state.currArray]);
-
         this.processAnimations();
     }
 
     // Visualises the execution of optimised bubble sort
     visualiseOptimisedBubbleSort(): void {
         this.animationArray = getOptimisedBubbleSortAnimations([...this.state.currArray]);
-
         this.processAnimations();
     }
 
     // Visualises the execution of merge sort
     visualiseIterativeMergeSort(): void {
         this.animationArray = getIterativeMergeSortAnimations([...this.state.currArray]);
-
         this.processAnimations();
     }
 
     // Visualises the execution of quick sort
     visualiseQuickSort(): void {
         this.animationArray = getQuickSortAnimations([...this.state.currArray]);
-
         this.processAnimations();
     }
 
     // Visualises the execution of heap sort
     visualiseHeapSort(): void {
         this.animationArray = getHeapSortAnimations([...this.state.currArray]);
-
         this.processAnimations();
     }
 
@@ -254,13 +250,15 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                                 }}>
                                 Generate New Array
                             </button>
+
                             <button
                                 className="array-button"
                                 onClick={() => {
                                     this.stopAnimations();
                                 }}
                                 id="stopButton">
-                                Stop
+                                <span className="material-symbols-rounded">Stop</span>
+                                <span>Stop</span>
                             </button>
                         </div>
                     </div>
