@@ -74,91 +74,51 @@ export default class SortingVisualiser extends React.Component<
         this.setState({ currArray, barColours });
     }
 
-    // Process an array of animations
-    processAnimations(animations: Animation[], sortedArray: number[]): void {
-        for (let i = 0; i < animations.length; i++) {
-            const animation: Animation = animations[i];
-
-            // Switch based on animation type
-            switch (animation.type) {
-                case AnimationType.ComparisonOn:
-                case AnimationType.ComparisonOff:
-                    // Handle comparison animations
-                    const firstStyle = document.getElementById(
-                        `${animation.firstIdx}`
-                    )?.style;
-                    const secondStyle = document.getElementById(
-                        `${animation.secondIdx}`
-                    )?.style;
-
-                    if (firstStyle === undefined || secondStyle === undefined) {
-                        break;
+    processAnimations(animations: Animation[]) {
+        animations.map((val, idx) => {
+            setTimeout(() => {
+                this.animate(val);
+            }, idx * SortingVisualiser.ANIMATION_TIME);
+        });
                     }
 
-                    this.timeOuts.push(
-                        setTimeout(() => {
-                            firstStyle.backgroundColor = animation.colour;
-                            secondStyle.backgroundColor = animation.colour;
-                        }, i * SortingVisualiser.ANIMATION_TIME)
-                    );
+    animate(animation: Animation) {
+        const { type } = animation;
 
-                    break;
+        // Switch based on animation type
+        if (
+            type === AnimationType.ComparisonOff ||
+            type === AnimationType.ComparisonOn
+        ) {
+            const { firstIdx, secondIdx } = animation;
 
-                case AnimationType.Swap:
-                    // Handle swap animations
-                    const firstBarStyle = document.getElementById(
-                        `${animation.firstIdx}`
-                    )?.style;
-                    const secondBarStyle = document.getElementById(
-                        `${animation.secondIdx}`
-                    )?.style;
-
+            const barColours: number[] = this.state.barColours.map(
+                (val, idx) => {
                     if (
-                        firstBarStyle === undefined ||
-                        secondBarStyle === undefined
+                        (idx === firstIdx || idx === secondIdx) &&
+                        type === AnimationType.ComparisonOn
                     ) {
-                        break;
+                        return 1;
+                    } else {
+                        return 0;
                     }
-
-                    this.timeOuts.push(
-                        setTimeout(() => {
-                            firstBarStyle.height = `${animation.firstValue}px`;
-                            secondBarStyle.height = `${animation.secondValue}px`;
-                        }, i * SortingVisualiser.ANIMATION_TIME)
+                }
                     );
 
-                    break;
+            this.setState({ barColours });
+        } else if (type === AnimationType.Swap) {
+            const currArray = [...this.state.currArray];
+            const { firstIdx, secondIdx, firstValue, secondValue } = animation;
 
-                case AnimationType.Replace:
-                    // Handle replace animations
-                    const barStyle = document.getElementById(
-                        `${animation.idx}`
-                    )?.style;
+            currArray[firstIdx] = firstValue;
+            currArray[secondIdx] = secondValue;
+            this.setState({ currArray });
+        } else if (type === AnimationType.Replace) {
+            const currArray = [...this.state.currArray];
+            const { idx, value } = animation;
 
-                    if (barStyle === undefined) {
-                        break;
-                    }
-
-                    this.timeOuts.push(
-                        setTimeout(() => {
-                            barStyle.height = `${animation.value}px`;
-                        }, i * SortingVisualiser.ANIMATION_TIME)
-                    );
-
-                    break;
-            }
-
-            // At the end of all animations, change the state with new sorted array
-            if (i === animations.length - 1) {
-                this.timeOuts.push(
-                    setTimeout(() => {
-                        this.setState({
-                            currArray: sortedArray,
-                            size: sortedArray.length
-                        });
-                    }, (i + 1) * SortingVisualiser.ANIMATION_TIME)
-                );
-            }
+            currArray[idx] = value;
+            this.setState({ currArray });
         }
     }
 
