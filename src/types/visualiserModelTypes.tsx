@@ -7,5 +7,6 @@ export type SortVizProps = {
 
 export type SortVizState = {
     currArray: number[];
+    barColours: number[];
     size: number;
 };
