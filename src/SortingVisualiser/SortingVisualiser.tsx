@@ -1,5 +1,5 @@
 import React from 'react';
-import { background, primary } from '../colours';
+import { background, primary, secondary } from '../colours';
 import {
     getBubbleSortAnimations,
     getOptimisedBubbleSortAnimations
@@ -124,68 +124,64 @@ export default class SortingVisualiser extends React.Component<
 
     // Visualises the execution of selection sort
     visualiseSelectionSort(): void {
-        const [animations, sortedArray] = getSelectionSortAnimations(
-            this.state.currArray
-        );
-        this.processAnimations(animations, sortedArray);
+        const animations = getSelectionSortAnimations([
+            ...this.state.currArray
+        ]);
+
+        this.processAnimations(animations);
     }
 
     // Visualises the execution of insertion sort
     visualiseInsertionSort(): void {
-        const [animations, sortedArray] = getInsertionSortAnimations(
-            this.state.currArray
-        );
-        this.processAnimations(animations, sortedArray);
+        const animations = getInsertionSortAnimations([
+            ...this.state.currArray
+        ]);
+        this.processAnimations(animations);
     }
 
     // Visualises the execution of bubble sort
     visualiseBubbleSort(): void {
-        const [animations, sortedArray] = getBubbleSortAnimations(
-            this.state.currArray
-        );
+        const animations = getBubbleSortAnimations([...this.state.currArray]);
 
-        this.processAnimations(animations, sortedArray);
+        this.processAnimations(animations);
     }
 
     // Visualises the execution of optimised bubble sort
     visualiseOptimisedBubbleSort(): void {
-        const [animations, sortedArray] = getOptimisedBubbleSortAnimations(
-            this.state.currArray
-        );
+        const animations = getOptimisedBubbleSortAnimations([
+            ...this.state.currArray
+        ]);
 
-        this.processAnimations(animations, sortedArray);
+        this.processAnimations(animations);
     }
 
     // Visualises the execution of merge sort
     visualiseIterativeMergeSort(): void {
-        const [animations, sortedArray] = getIterativeMergeSortAnimations(
-            this.state.currArray
-        );
+        const animations = getIterativeMergeSortAnimations([
+            ...this.state.currArray
+        ]);
 
-        this.processAnimations(animations, sortedArray);
+        this.processAnimations(animations);
     }
 
     // Visualises the execution of quick sort
     visualiseQuickSort(): void {
-        const [animations, sortedArray] = getQuickSortAnimations(
-            this.state.currArray
-        );
-        this.processAnimations(animations, sortedArray);
+        const animations = getQuickSortAnimations([...this.state.currArray]);
+
+        this.processAnimations(animations);
     }
 
     // Visualises the execution of heap sort
     visualiseHeapSort(): void {
-        const [animations, sortedArray] = getHeapSortAnimations(
-            this.state.currArray
-        );
-        this.processAnimations(animations, sortedArray);
+        const animations = getHeapSortAnimations([...this.state.currArray]);
+
+        this.processAnimations(animations);
     }
 
     // Change array size and regenerate array upon slider change
     sizeSliderChangeHandler(event: any): void {
         this.setState(
             {
-                currArray: this.state.currArray,
                 size: event.target.value
             },
             () => {
@@ -311,7 +307,11 @@ export default class SortingVisualiser extends React.Component<
                                 key={idx}
                                 style={{
                                     width: `${barWidth}px`,
+                                    height: `${value}px`,
                                     backgroundColor:
+                                        barColours[idx] === 1
+                                            ? secondary
+                                            : primary
                                 }}></span>
                         );
                     })}
