@@ -36,7 +36,8 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
         this.state = {
             currArray: [],
             barColours: [],
-            size: Math.floor((props.maxSize + props.minSize) / 2)
+            size: Math.floor((props.maxSize + props.minSize) / 2),
+            isSorting: false
         };
     }
 
@@ -100,8 +101,7 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
 
     // Process the animations in an array of animations
     processAnimations(): void {
-        this.stopAnimations();
-
+        this.currAnimIndex = 0;
         this.animationIntervalID = setInterval(() => {
             this.animate();
         }, this.getAnimationDelay());
@@ -112,7 +112,6 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
         if (this.currAnimIndex === this.animationArray.length) {
             this.stopAnimations();
             this.animationArray = [];
-            this.currAnimIndex = 0;
             return;
         }
 
@@ -159,68 +158,45 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
         this.revertBarColours();
         if (this.animationIntervalID !== undefined) {
             clearInterval(this.animationIntervalID);
-            this.revertBarColours();
+            this.setState({ isSorting: false });
         }
     }
 
-    // Visualises the execution of selection sort
-    visualiseSelectionSort(): void {
-        this.animationArray = getSelectionSortAnimations([...this.state.currArray]);
-        this.processAnimations();
-    }
+    // Visualises the sorting with the help of a type that is passed in as a string
+    visualiseSort(sortType: string): void {
+        this.setState({ isSorting: true });
 
-    // Visualises the execution of insertion sort
-    visualiseInsertionSort(): void {
-        this.animationArray = getInsertionSortAnimations([...this.state.currArray]);
-        this.processAnimations();
-    }
+        switch (sortType) {
+            case 'select':
+                this.animationArray = getSelectionSortAnimations([...this.state.currArray]);
+                break;
+            case 'insert':
+                this.animationArray = getInsertionSortAnimations([...this.state.currArray]);
+                break;
+            case 'bubble':
+                this.animationArray = getBubbleSortAnimations([...this.state.currArray]);
+                break;
+            case 'opt_bubble':
+                this.animationArray = getOptimisedBubbleSortAnimations([...this.state.currArray]);
+                break;
+            case 'merge':
+                this.animationArray = getIterativeMergeSortAnimations([...this.state.currArray]);
+                break;
+            case 'quick':
+                this.animationArray = getQuickSortAnimations([...this.state.currArray]);
+                break;
+            case 'heap':
+                this.animationArray = getHeapSortAnimations([...this.state.currArray]);
+                break;
+        }
 
-    // Visualises the execution of bubble sort
-    visualiseBubbleSort(): void {
-        this.animationArray = getBubbleSortAnimations([...this.state.currArray]);
         this.processAnimations();
-    }
-
-    // Visualises the execution of optimised bubble sort
-    visualiseOptimisedBubbleSort(): void {
-        this.animationArray = getOptimisedBubbleSortAnimations([...this.state.currArray]);
-        this.processAnimations();
-    }
-
-    // Visualises the execution of merge sort
-    visualiseIterativeMergeSort(): void {
-        this.animationArray = getIterativeMergeSortAnimations([...this.state.currArray]);
-        this.processAnimations();
-    }
-
-    // Visualises the execution of quick sort
-    visualiseQuickSort(): void {
-        this.animationArray = getQuickSortAnimations([...this.state.currArray]);
-        this.processAnimations();
-    }
-
-    // Visualises the execution of heap sort
-    visualiseHeapSort(): void {
-        this.animationArray = getHeapSortAnimations([...this.state.currArray]);
-        this.processAnimations();
-    }
-
-    // Change array size and regenerate array upon slider change
-    sizeSliderChangeHandler(event: any): void {
-        this.setState(
-            {
-                size: event.target.value
-            },
-            () => {
-                this.generateArray();
-            }
-        );
     }
 
     // Renders the component to be viewed
     render(): React.ReactNode {
         // Calculates margins and bar width
-        const { currArray, barColours, size } = this.state;
+        const { currArray, barColours, size, isSorting } = this.state;
         const width = window.innerWidth;
         const barWidth = (width * 0.8) / size - 1;
 
@@ -241,6 +217,7 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                                 max={`${this.props.maxSize}`}
                                 defaultValue={`${this.state.size}`}
                                 id="sizeSlider"
+                                disabled={isSorting}
                                 onChange={(event) => {
                                     this.sizeSliderChangeHandler(event);
                                 }}></input>
@@ -260,9 +237,9 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                                 }}>
                                 Generate New Array
                             </button>
-
                             <button
                                 className="array-button"
+                                disabled={!isSorting}
                                 onClick={() => {
                                     this.stopAnimations();
                                 }}
@@ -276,8 +253,17 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                         <div>
                             <button
                                 className="sorting-button"
+                                disabled={isSorting}
                                 onClick={() => {
-                                    this.visualiseInsertionSort();
+                                    this.visualiseSort('select');
+                                }}>
+                                Selection Sort
+                            </button>
+                            <button
+                                className="sorting-button"
+                                disabled={isSorting}
+                                onClick={() => {
+                                    this.visualiseSort('insert');
                                 }}>
                                 Insertion Sort
                             </button>
@@ -285,8 +271,9 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                         <div>
                             <button
                                 className="sorting-button"
+                                disabled={isSorting}
                                 onClick={() => {
-                                    this.visualiseBubbleSort();
+                                    this.visualiseSort('bubble');
                                 }}>
                                 Bubble Sort
                             </button>
@@ -294,8 +281,9 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                         <div>
                             <button
                                 className="sorting-button"
+                                disabled={isSorting}
                                 onClick={() => {
-                                    this.visualiseOptimisedBubbleSort();
+                                    this.visualiseSort('opt_bubble');
                                 }}>
                                 Optimised Bubble Sort
                             </button>
@@ -303,8 +291,9 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                         <div>
                             <button
                                 className="sorting-button"
+                                disabled={isSorting}
                                 onClick={() => {
-                                    this.visualiseIterativeMergeSort();
+                                    this.visualiseSort('merge');
                                 }}>
                                 Merge Sort
                             </button>
@@ -312,8 +301,9 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                         <div>
                             <button
                                 className="sorting-button"
+                                disabled={isSorting}
                                 onClick={() => {
-                                    this.visualiseQuickSort();
+                                    this.visualiseSort('quick');
                                 }}>
                                 Quick Sort
                             </button>
@@ -321,8 +311,9 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                         <div>
                             <button
                                 className="sorting-button"
+                                disabled={isSorting}
                                 onClick={() => {
-                                    this.visualiseHeapSort();
+                                    this.visualiseSort('heap');
                                 }}>
                                 Heap Sort
                             </button>
