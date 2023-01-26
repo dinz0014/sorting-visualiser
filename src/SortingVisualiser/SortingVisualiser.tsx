@@ -17,10 +17,10 @@ import './SortingVisualiser.css';
 export default class SortingVisualiser extends React.Component<SortVizProps, SortVizState> {
     // Default properties. TODO: Pull these from a config file of sorts
     static defaultProps = {
-        min: 10,
-        max: 1000,
-        width: window.innerWidth,
-        height: window.innerHeight
+        minVal: 10,
+        maxVal: 1000,
+        minSize: 10,
+        maxSize: 300
     };
 
     ANIMATION_TIME = 10;
@@ -36,7 +36,7 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
         this.state = {
             currArray: [],
             barColours: [],
-            size: 175
+            size: Math.floor((props.maxSize + props.minSize) / 2)
         };
     }
 
@@ -215,7 +215,7 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
     render(): React.ReactNode {
         // Calculates margins and bar width
         const { currArray, barColours, size } = this.state;
-        const width = this.props.width;
+        const width = window.innerWidth;
         const barWidth = (width * 0.8) / size - 1;
 
         // Renders the array bars and sets their relevant style attributes
@@ -226,11 +226,14 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                     style={{
                         backgroundColor: background
                     }}>
+                    <div className="array-controls">
                     <div className="size-slider">
+                            <p id="sizeValue">Array size: {size}</p>
                         <input
                             type="range"
-                            min="10"
-                            max="300"
+                                min={`${this.props.minSize}`}
+                                max={`${this.props.maxSize}`}
+                                defaultValue={`${this.state.size}`}
                             id="sizeSlider"
                             onChange={(event) => {
                                 this.sizeSliderChangeHandler(event);
@@ -253,11 +256,12 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                             Generate New Array
                         </button>
                         <button
-                            className="sorting-button"
+                                className="array-button"
                             onClick={() => {
-                                this.visualiseSelectionSort();
-                            }}>
-                            Selection Sort
+                                    this.stopAnimations();
+                                }}
+                                id="stopButton">
+                                Stop
                         </button>
                         <button
                             className="sorting-button"
@@ -316,7 +320,7 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                         className="array-bar"
                         style={{
                             width: `1px`,
-                            height: `${this.props.max * 0.8}px`,
+                            height: `${this.props.maxVal * 0.8}px`,
                             backgroundColor: background
                         }}></span>
                     {currArray.map((value, idx) => {
@@ -328,10 +332,7 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                                 style={{
                                     width: `${barWidth}px`,
                                     height: `${value * 0.8}px`,
-                                    backgroundColor:
-                                        barColours[idx] === 1
-                                            ? secondary
-                                            : primary
+                                    backgroundColor: barColours[idx] === 1 ? secondary : primary
                                 }}></span>
                         );
                     })}
