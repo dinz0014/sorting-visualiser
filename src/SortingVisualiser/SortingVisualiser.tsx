@@ -21,12 +21,12 @@ export default class SortingVisualiser extends React.Component<
     // Default properties. TODO: Pull these from a config file of sorts
     static defaultProps = {
         min: 10,
-        max: 700,
+        max: 1000,
         width: window.innerWidth,
         height: window.innerHeight
     };
 
-    static ANIMATION_TIME = 1;
+    static ANIMATION_TIME = 2;
     static CONTROLS_HEIGHT = 80;
     originalArray: number[] = [];
     timeOuts: NodeJS.Timeout[] = [];
@@ -74,14 +74,16 @@ export default class SortingVisualiser extends React.Component<
         this.setState({ currArray, barColours });
     }
 
+    // Process the animations in an array of animations
     processAnimations(animations: Animation[]) {
         animations.map((val, idx) => {
             setTimeout(() => {
                 this.animate(val);
             }, idx * SortingVisualiser.ANIMATION_TIME);
         });
-                    }
+    }
 
+    // Process a single animation
     animate(animation: Animation) {
         const { type } = animation;
 
@@ -92,8 +94,9 @@ export default class SortingVisualiser extends React.Component<
         ) {
             const { firstIdx, secondIdx } = animation;
 
+            // Set all other bars to default colour, set the compared bars to red colour
             const barColours: number[] = this.state.barColours.map(
-                (val, idx) => {
+                (_val, idx) => {
                     if (
                         (idx === firstIdx || idx === secondIdx) &&
                         type === AnimationType.ComparisonOn
@@ -103,13 +106,14 @@ export default class SortingVisualiser extends React.Component<
                         return 0;
                     }
                 }
-                    );
+            );
 
             this.setState({ barColours });
         } else if (type === AnimationType.Swap) {
             const currArray = [...this.state.currArray];
             const { firstIdx, secondIdx, firstValue, secondValue } = animation;
 
+            // Swap the values at the given indices
             currArray[firstIdx] = firstValue;
             currArray[secondIdx] = secondValue;
             this.setState({ currArray });
@@ -117,6 +121,7 @@ export default class SortingVisualiser extends React.Component<
             const currArray = [...this.state.currArray];
             const { idx, value } = animation;
 
+            // Replace the value at a given index with a given value
             currArray[idx] = value;
             this.setState({ currArray });
         }
@@ -208,9 +213,8 @@ export default class SortingVisualiser extends React.Component<
                     <div className="size-slider">
                         <input
                             type="range"
-                            min="50"
+                            min="10"
                             max="300"
-                            defaultValue={this.state.size}
                             id="sizeSlider"
                             onChange={(event) => {
                                 this.sizeSliderChangeHandler(event);
@@ -296,7 +300,7 @@ export default class SortingVisualiser extends React.Component<
                         className="array-bar"
                         style={{
                             width: `1px`,
-                            height: `750px`,
+                            height: `${this.props.max * 0.8}px`,
                             backgroundColor: background
                         }}></span>
                     {currArray.map((value, idx) => {
@@ -307,7 +311,7 @@ export default class SortingVisualiser extends React.Component<
                                 key={idx}
                                 style={{
                                     width: `${barWidth}px`,
-                                    height: `${value}px`,
+                                    height: `${value * 0.8}px`,
                                     backgroundColor:
                                         barColours[idx] === 1
                                             ? secondary
