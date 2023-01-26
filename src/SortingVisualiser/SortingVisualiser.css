@@ -33,6 +33,7 @@
 
 .size-slider input[type="range"] {
     -webkit-appearance:none !important;
+    appearance: none;
     width: 420px;
     height: 2px;
     background: white;

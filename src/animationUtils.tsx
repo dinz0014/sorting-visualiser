@@ -1,5 +1,4 @@
 import { Animation, AnimationType } from './types/animationTypes';
-import { primary, secondary } from './colours';
 import { ComparisonType } from './types/comparisonTypes';
 
 /*
@@ -33,15 +32,13 @@ export function compare(
     animations.push({
         type: AnimationType.ComparisonOn,
         firstIdx: i,
-        secondIdx: j,
-        colour: secondary
+        secondIdx: j
     });
 
     animations.push({
         type: AnimationType.ComparisonOff,
         firstIdx: i,
-        secondIdx: j,
-        colour: primary
+        secondIdx: j
     });
 
     let array1 = array;

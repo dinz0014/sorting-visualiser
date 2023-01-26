@@ -9,7 +9,7 @@ It accepts the array to be sorted as the imput, and outputs an array of animatio
 */
 export default function getIterativeMergeSortAnimations(
     array: number[]
-): [Animation[], number[]] {
+): Animation[] {
     const animations: Animation[] = [];
     const n = array.length;
     let subSize = 1;
@@ -35,7 +35,7 @@ export default function getIterativeMergeSortAnimations(
         subSize *= 2;
     }
 
-    return [animations, array];
+    return animations;
 }
 
 /*
@@ -49,7 +49,7 @@ function merge(
     left: number,
     mid: number,
     right: number
-) {
+): void {
     // L holds the left partition and R holds the right partition
     let L: number[] = [];
     let R: number[] = [];

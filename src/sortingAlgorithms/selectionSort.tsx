@@ -9,7 +9,7 @@ This function returns a array of animations which, when processed, display the e
 */
 export default function getSelectionSortAnimations(
     array: number[]
-): [Animation[], number[]] {
+): Animation[] {
     const animations: Animation[] = [];
 
     // Repeatedly find the minimum element in the unsorted portion of the array and place in the correct spot.
@@ -25,5 +25,5 @@ export default function getSelectionSortAnimations(
         swap(array, animations, mindex, i);
     }
 
-    return [animations, array];
+    return animations;
 }

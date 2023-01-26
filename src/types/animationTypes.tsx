@@ -9,7 +9,6 @@ export type ComparisonAnimation = {
     type: AnimationType.ComparisonOn | AnimationType.ComparisonOff;
     firstIdx: number;
     secondIdx: number;
-    colour: string;
 };
 
 export type SwapAnimation = {

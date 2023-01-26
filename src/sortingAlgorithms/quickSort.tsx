@@ -7,12 +7,10 @@ This function performs quick sort on an array of numbers.
 
 It accepts the array of numbers to be sorted and returns an array of animations required to visualise the execution of quick sort as well as the sorted array.
 */
-export function getQuickSortAnimations(
-    array: number[]
-): [Animation[], number[]] {
+export function getQuickSortAnimations(array: number[]): Animation[] {
     const animations: Animation[] = [];
     quickSortHelper(array, animations, 0, array.length - 1);
-    return [animations, array];
+    return animations;
 }
 
 /*
@@ -23,7 +21,7 @@ function quickSortHelper(
     animations: Animation[],
     start: number,
     end: number
-) {
+): void {
     // Recursively quick sort until the size of the portion is less than or equal to 2
     while (end - start > 1) {
         // Find sorted index of pivot

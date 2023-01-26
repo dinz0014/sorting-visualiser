@@ -1,5 +1,5 @@
 import React from 'react';
-import { background, primary } from '../colours';
+import { background, primary, secondary } from '../colours';
 import {
     getBubbleSortAnimations,
     getOptimisedBubbleSortAnimations
@@ -10,7 +10,7 @@ import getIterativeMergeSortAnimations from '../sortingAlgorithms/iterativeMerge
 import { getQuickSortAnimations } from '../sortingAlgorithms/quickSort';
 import getSelectionSortAnimations from '../sortingAlgorithms/selectionSort';
 import { Animation, AnimationType } from '../types/animationTypes';
-import { SortVizProps, SortVizState } from '../types/sortVisualiserTypes';
+import { SortVizProps, SortVizState } from '../types/visualiserModelTypes';
 import './SortingVisualiser.css';
 
 // Main component class for Sorting Visualiser
@@ -21,13 +21,12 @@ export default class SortingVisualiser extends React.Component<
     // Default properties. TODO: Pull these from a config file of sorts
     static defaultProps = {
         min: 10,
-        max: 700,
+        max: 1000,
         width: window.innerWidth,
         height: window.innerHeight
     };
 
-    static ANIMATION_TIME = 1;
-    static CONTROLS_HEIGHT = 80;
+    ANIMATION_TIME = 10;
     originalArray: number[] = [];
     timeOuts: NodeJS.Timeout[] = [];
 
@@ -37,6 +36,7 @@ export default class SortingVisualiser extends React.Component<
 
         this.state = {
             currArray: [],
+            barColours: [],
             size: 175
         };
     }
@@ -51,181 +51,146 @@ export default class SortingVisualiser extends React.Component<
         return Math.floor(Math.random() * (end - start + 1) + start);
     }
 
+    // Calculates a reasonable animation time based on the array size
+    getAnimationDelay(): number {
+        return this.ANIMATION_TIME - Math.floor(this.state.size / 100);
+    }
+
     // Revert any sorting that has been done on the array
     revertArray(): void {
         let currArray: number[] = Object.assign([], this.originalArray);
-        this.setState({ currArray, size: this.originalArray.length });
+        this.setState({ currArray });
     }
 
     // Generates the array of random numbers to be sorted
     generateArray(): void {
         const currArray: number[] = [];
-        this.timeOuts.map((timeOut) => {
-            clearTimeout(timeOut);
-        });
+        const barColours: number[] = [];
 
         for (let i = 0; i < this.state.size; i++) {
             currArray.push(
                 this.randomNumBetween(this.props.min, this.props.max)
             );
+            barColours.push(0);
         }
 
         this.originalArray = Object.assign([], currArray);
-        this.setState({ currArray, size: this.state.size });
+        this.setState({ currArray, barColours });
     }
 
-    // Process an array of animations
-    processAnimations(animations: Animation[], sortedArray: number[]): void {
-        for (let i = 0; i < animations.length; i++) {
-            const animation: Animation = animations[i];
+    // Process the animations in an array of animations
+    processAnimations(animations: Animation[]) {
+        animations.map((val, idx) => {
+            setTimeout(() => {
+                this.animate(val);
+            }, idx * this.getAnimationDelay());
+        });
+    }
 
-            // Switch based on animation type
-            switch (animation.type) {
-                case AnimationType.ComparisonOn:
-                case AnimationType.ComparisonOff:
-                    // Handle comparison animations
-                    const firstStyle = document.getElementById(
-                        `${animation.firstIdx}`
-                    )?.style;
-                    const secondStyle = document.getElementById(
-                        `${animation.secondIdx}`
-                    )?.style;
+    // Process a single animation
+    animate(animation: Animation) {
+        const { type } = animation;
 
-                    if (firstStyle === undefined || secondStyle === undefined) {
-                        break;
-                    }
+        // Switch based on animation type
+        if (
+            type === AnimationType.ComparisonOff ||
+            type === AnimationType.ComparisonOn
+        ) {
+            const { firstIdx, secondIdx } = animation;
 
-                    this.timeOuts.push(
-                        setTimeout(() => {
-                            firstStyle.backgroundColor = animation.colour;
-                            secondStyle.backgroundColor = animation.colour;
-                        }, i * SortingVisualiser.ANIMATION_TIME)
-                    );
-
-                    break;
-
-                case AnimationType.Swap:
-                    // Handle swap animations
-                    const firstBarStyle = document.getElementById(
-                        `${animation.firstIdx}`
-                    )?.style;
-                    const secondBarStyle = document.getElementById(
-                        `${animation.secondIdx}`
-                    )?.style;
-
+            // Set all other bars to default colour, set the compared bars to red colour
+            const barColours: number[] = this.state.barColours.map(
+                (_val, idx) => {
                     if (
-                        firstBarStyle === undefined ||
-                        secondBarStyle === undefined
+                        (idx === firstIdx || idx === secondIdx) &&
+                        type === AnimationType.ComparisonOn
                     ) {
-                        break;
+                        return 1;
+                    } else {
+                        return 0;
                     }
+                }
+            );
 
-                    this.timeOuts.push(
-                        setTimeout(() => {
-                            firstBarStyle.height = `${animation.firstValue}px`;
-                            secondBarStyle.height = `${animation.secondValue}px`;
-                        }, i * SortingVisualiser.ANIMATION_TIME)
-                    );
+            this.setState({ barColours });
+        } else if (type === AnimationType.Swap) {
+            const currArray = [...this.state.currArray];
+            const { firstIdx, secondIdx, firstValue, secondValue } = animation;
 
-                    break;
+            // Swap the values at the given indices
+            currArray[firstIdx] = firstValue;
+            currArray[secondIdx] = secondValue;
+            this.setState({ currArray });
+        } else if (type === AnimationType.Replace) {
+            const currArray = [...this.state.currArray];
+            const { idx, value } = animation;
 
-                case AnimationType.Replace:
-                    // Handle replace animations
-                    const barStyle = document.getElementById(
-                        `${animation.idx}`
-                    )?.style;
-
-                    if (barStyle === undefined) {
-                        break;
-                    }
-
-                    this.timeOuts.push(
-                        setTimeout(() => {
-                            barStyle.height = `${animation.value}px`;
-                        }, i * SortingVisualiser.ANIMATION_TIME)
-                    );
-
-                    break;
-            }
-
-            // At the end of all animations, change the state with new sorted array
-            if (i === animations.length - 1) {
-                this.timeOuts.push(
-                    setTimeout(() => {
-                        this.setState({
-                            currArray: sortedArray,
-                            size: sortedArray.length
-                        });
-                    }, (i + 1) * SortingVisualiser.ANIMATION_TIME)
-                );
-            }
+            // Replace the value at a given index with a given value
+            currArray[idx] = value;
+            this.setState({ currArray });
         }
     }
 
     // Visualises the execution of selection sort
     visualiseSelectionSort(): void {
-        const [animations, sortedArray] = getSelectionSortAnimations(
-            this.state.currArray
-        );
-        this.processAnimations(animations, sortedArray);
+        const animations = getSelectionSortAnimations([
+            ...this.state.currArray
+        ]);
+
+        this.processAnimations(animations);
     }
 
     // Visualises the execution of insertion sort
     visualiseInsertionSort(): void {
-        const [animations, sortedArray] = getInsertionSortAnimations(
-            this.state.currArray
-        );
-        this.processAnimations(animations, sortedArray);
+        const animations = getInsertionSortAnimations([
+            ...this.state.currArray
+        ]);
+        this.processAnimations(animations);
     }
 
     // Visualises the execution of bubble sort
     visualiseBubbleSort(): void {
-        const [animations, sortedArray] = getBubbleSortAnimations(
-            this.state.currArray
-        );
+        const animations = getBubbleSortAnimations([...this.state.currArray]);
 
-        this.processAnimations(animations, sortedArray);
+        this.processAnimations(animations);
     }
 
     // Visualises the execution of optimised bubble sort
     visualiseOptimisedBubbleSort(): void {
-        const [animations, sortedArray] = getOptimisedBubbleSortAnimations(
-            this.state.currArray
-        );
+        const animations = getOptimisedBubbleSortAnimations([
+            ...this.state.currArray
+        ]);
 
-        this.processAnimations(animations, sortedArray);
+        this.processAnimations(animations);
     }
 
     // Visualises the execution of merge sort
     visualiseIterativeMergeSort(): void {
-        const [animations, sortedArray] = getIterativeMergeSortAnimations(
-            this.state.currArray
-        );
+        const animations = getIterativeMergeSortAnimations([
+            ...this.state.currArray
+        ]);
 
-        this.processAnimations(animations, sortedArray);
+        this.processAnimations(animations);
     }
 
     // Visualises the execution of quick sort
     visualiseQuickSort(): void {
-        const [animations, sortedArray] = getQuickSortAnimations(
-            this.state.currArray
-        );
-        this.processAnimations(animations, sortedArray);
+        const animations = getQuickSortAnimations([...this.state.currArray]);
+
+        this.processAnimations(animations);
     }
 
     // Visualises the execution of heap sort
     visualiseHeapSort(): void {
-        const [animations, sortedArray] = getHeapSortAnimations(
-            this.state.currArray
-        );
-        this.processAnimations(animations, sortedArray);
+        const animations = getHeapSortAnimations([...this.state.currArray]);
+
+        this.processAnimations(animations);
     }
 
     // Change array size and regenerate array upon slider change
     sizeSliderChangeHandler(event: any): void {
         this.setState(
             {
-                currArray: this.state.currArray,
                 size: event.target.value
             },
             () => {
@@ -237,10 +202,9 @@ export default class SortingVisualiser extends React.Component<
     // Renders the component to be viewed
     render(): React.ReactNode {
         // Calculates margins and bar width
-        const currArray = this.state.currArray;
+        const { currArray, barColours, size } = this.state;
         const width = this.props.width;
-        const height = this.props.height;
-        const barWidth = (width * 0.8) / this.state.currArray.length - 1;
+        const barWidth = (width * 0.8) / size - 1;
 
         // Renders the array bars and sets their relevant style attributes
         return (
@@ -253,14 +217,13 @@ export default class SortingVisualiser extends React.Component<
                     <div className="size-slider">
                         <input
                             type="range"
-                            min="50"
+                            min="10"
                             max="300"
-                            defaultValue={this.state.size}
                             id="sizeSlider"
                             onChange={(event) => {
                                 this.sizeSliderChangeHandler(event);
                             }}></input>
-                        <p id="sizeValue">Array size: {this.state.size}</p>
+                        <p id="sizeValue">Array size: {size}</p>
                     </div>
                     <div className="button-row">
                         <button
@@ -341,7 +304,7 @@ export default class SortingVisualiser extends React.Component<
                         className="array-bar"
                         style={{
                             width: `1px`,
-                            height: `750px`,
+                            height: `${this.props.max * 0.8}px`,
                             backgroundColor: background
                         }}></span>
                     {currArray.map((value, idx) => {
@@ -352,7 +315,11 @@ export default class SortingVisualiser extends React.Component<
                                 key={idx}
                                 style={{
                                     width: `${barWidth}px`,
-                                    height: `${value}px`
+                                    height: `${value * 0.8}px`,
+                                    backgroundColor:
+                                        barColours[idx] === 1
+                                            ? secondary
+                                            : primary
                                 }}></span>
                         );
                     })}
