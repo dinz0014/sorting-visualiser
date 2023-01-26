@@ -9,4 +9,5 @@ export type SortVizState = {
     currArray: number[];
     barColours: number[];
     size: number;
+    isSorting: boolean;
 };
