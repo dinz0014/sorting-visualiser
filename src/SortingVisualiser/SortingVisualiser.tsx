@@ -55,6 +55,18 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
         return this.ANIMATION_TIME - Math.floor(this.state.size / 100);
     }
 
+    // Change array size and regenerate array upon slider change
+    sizeSliderChangeHandler(event: any): void {
+        this.setState(
+            {
+                size: event.target.value
+            },
+            () => {
+                this.generateArray();
+            }
+        );
+    }
+
     // Revert any sorting that has been done on the array
     revertArray(): void {
         this.stopAnimations();
@@ -76,17 +88,14 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
     // Generates the array of random numbers to be sorted
     generateArray(): void {
         const currArray: number[] = [];
-        const barColours: number[] = [];
-
         this.stopAnimations();
 
         for (let i = 0; i < this.state.size; i++) {
             currArray.push(this.randomNumBetween(this.props.minVal, this.props.maxVal));
-            barColours.push(0);
         }
 
         this.originalArray = Object.assign([], currArray);
-        this.setState({ currArray, barColours });
+        this.setState({ currArray });
     }
 
     // Process the animations in an array of animations
@@ -147,6 +156,7 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
 
     // Stop the animations and set all colours back to default
     stopAnimations(): void {
+        this.revertBarColours();
         if (this.animationIntervalID !== undefined) {
             clearInterval(this.animationIntervalID);
             this.revertBarColours();
