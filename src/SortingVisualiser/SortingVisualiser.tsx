@@ -14,10 +14,7 @@ import { SortVizProps, SortVizState } from '../types/visualiserModelTypes';
 import './SortingVisualiser.css';
 
 // Main component class for Sorting Visualiser
-export default class SortingVisualiser extends React.Component<
-    SortVizProps,
-    SortVizState
-> {
+export default class SortingVisualiser extends React.Component<SortVizProps, SortVizState> {
     // Default properties. TODO: Pull these from a config file of sorts
     static defaultProps = {
         min: 10,
@@ -68,9 +65,7 @@ export default class SortingVisualiser extends React.Component<
         const barColours: number[] = [];
 
         for (let i = 0; i < this.state.size; i++) {
-            currArray.push(
-                this.randomNumBetween(this.props.min, this.props.max)
-            );
+            currArray.push(this.randomNumBetween(this.props.minVal, this.props.maxVal));
             barColours.push(0);
         }
 
@@ -92,15 +87,11 @@ export default class SortingVisualiser extends React.Component<
         const { type } = animation;
 
         // Switch based on animation type
-        if (
-            type === AnimationType.ComparisonOff ||
-            type === AnimationType.ComparisonOn
-        ) {
+        if (type === AnimationType.ComparisonOff || type === AnimationType.ComparisonOn) {
             const { firstIdx, secondIdx } = animation;
 
             // Set all other bars to default colour, set the compared bars to red colour
-            const barColours: number[] = this.state.barColours.map(
-                (_val, idx) => {
+            const barColours: number[] = this.state.barColours.map((_val, idx) => {
                     if (
                         (idx === firstIdx || idx === secondIdx) &&
                         type === AnimationType.ComparisonOn
@@ -109,8 +100,7 @@ export default class SortingVisualiser extends React.Component<
                     } else {
                         return 0;
                     }
-                }
-            );
+            });
 
             this.setState({ barColours });
         } else if (type === AnimationType.Swap) {
