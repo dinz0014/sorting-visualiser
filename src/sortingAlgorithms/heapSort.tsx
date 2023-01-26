@@ -7,9 +7,7 @@ This function performs heap sort on an array of numbers.
 
 It accepts as input the array of numbers to be sorted, and outputs an array of animations that visualise the execution of heap sort, as well as the sorted array
 */
-export function getHeapSortAnimations(
-    array: number[]
-): [Animation[], number[]] {
+export function getHeapSortAnimations(array: number[]): Animation[] {
     const animations: Animation[] = [];
     let end = array.length - 1;
 
@@ -31,7 +29,7 @@ export function getHeapSortAnimations(
         siftDown(array, animations, 0, end);
     }
 
-    return [animations, array];
+    return animations;
 }
 
 /*
@@ -44,7 +42,7 @@ function siftDown(
     animations: Animation[],
     root: number,
     end: number
-) {
+): void {
     // See if "root" has any children.
     while (2 * root + 1 <= end) {
         let child = 2 * root + 1;
