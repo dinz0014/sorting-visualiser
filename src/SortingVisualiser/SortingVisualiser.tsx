@@ -37,7 +37,8 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
             currArray: [],
             barColours: [],
             size: Math.floor((props.maxSize + props.minSize) / 2),
-            isSorting: false
+            isSorting: false,
+            sortType: ''
         };
     }
 
@@ -156,15 +157,24 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
     // Stop the animations and set all colours back to default
     stopAnimations(): void {
         this.revertBarColours();
+        this.setState({ sortType: '' });
         if (this.animationIntervalID !== undefined) {
             clearInterval(this.animationIntervalID);
             this.setState({ isSorting: false });
         }
     }
 
+    getSortButtonClassName(id: string): string {
+        if (this.state.sortType === id) {
+            return 'selected-sorting-button';
+        }
+
+        return 'sorting-button';
+    }
+
     // Visualises the sorting with the help of a type that is passed in as a string
     visualiseSort(sortType: string): void {
-        this.setState({ isSorting: true });
+        this.setState({ isSorting: true, sortType });
 
         switch (sortType) {
             case 'select':
@@ -196,7 +206,7 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
     // Renders the component to be viewed
     render(): React.ReactNode {
         // Calculates margins and bar width
-        const { currArray, barColours, size, isSorting } = this.state;
+        const { currArray, barColours, size, isSorting, sortType } = this.state;
         const width = window.innerWidth;
         const barWidth = (width * 0.8) / size - 1;
 
@@ -252,7 +262,7 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                     <div className="sort-buttons">
                         <div>
                             <button
-                                className="sorting-button"
+                                className={this.getSortButtonClassName('select')}
                                 disabled={isSorting}
                                 onClick={() => {
                                     this.visualiseSort('select');
@@ -260,7 +270,7 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                                 Selection Sort
                             </button>
                             <button
-                                className="sorting-button"
+                                className={this.getSortButtonClassName('insert')}
                                 disabled={isSorting}
                                 onClick={() => {
                                     this.visualiseSort('insert');
@@ -270,7 +280,7 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                         </div>
                         <div>
                             <button
-                                className="sorting-button"
+                                className={this.getSortButtonClassName('bubble')}
                                 disabled={isSorting}
                                 onClick={() => {
                                     this.visualiseSort('bubble');
@@ -280,7 +290,7 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                         </div>
                         <div>
                             <button
-                                className="sorting-button"
+                                className={this.getSortButtonClassName('opt_bubble')}
                                 disabled={isSorting}
                                 onClick={() => {
                                     this.visualiseSort('opt_bubble');
@@ -290,7 +300,7 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                         </div>
                         <div>
                             <button
-                                className="sorting-button"
+                                className={this.getSortButtonClassName('merge')}
                                 disabled={isSorting}
                                 onClick={() => {
                                     this.visualiseSort('merge');
@@ -300,7 +310,7 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                         </div>
                         <div>
                             <button
-                                className="sorting-button"
+                                className={this.getSortButtonClassName('quick')}
                                 disabled={isSorting}
                                 onClick={() => {
                                     this.visualiseSort('quick');
@@ -310,7 +320,7 @@ export default class SortingVisualiser extends React.Component<SortVizProps, Sor
                         </div>
                         <div>
                             <button
-                                className="sorting-button"
+                                className={this.getSortButtonClassName('heap')}
                                 disabled={isSorting}
                                 onClick={() => {
                                     this.visualiseSort('heap');

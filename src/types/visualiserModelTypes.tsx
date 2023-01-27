@@ -10,4 +10,5 @@ export type SortVizState = {
     barColours: number[];
     size: number;
     isSorting: boolean;
+    sortType: string;
 };

@@ -5,9 +5,10 @@
 :root {
     --arr-button-colour:  #B4F8C8;
     --sort-button-colour: #FBE7C6;
-    --stop-button-colour: #ff6e77;
+    --stop-button-colour: #ff8a8a;
     --background-colour: #242424;
     --disabled-colour: #878787;
+    --selected-colour: #39ff14;
 }
 
 .content{
@@ -16,10 +17,6 @@
     flex-direction: column;
     flex-grow: 1;
     min-height: 100vh;
-}
-
-button:disabled{
-    background-color: var(--disabled-colour);
 }
 
 .control-bar{
@@ -136,10 +133,9 @@ p{
 
 .array-button:hover:enabled{
     box-shadow: 0px 0px 10px 2px var(--arr-button-colour);
-    transition: box-shadow 0.5s ease-out;
+    transform: scale(1.05, 1.05);
+    transition: all 0.5s ease-out;
 }
-
-
 
 .sort-buttons{
     display: inline-flex;
@@ -156,14 +152,31 @@ p{
     border-color: var(--background-colour);
     border-style: solid;
     border-radius: 15px;
-    margin-right: 10px;
+    margin-right: 15px;
     margin-top: 25px;
     transition: all 0.75s ease-out;
 }
 
 .sorting-button:hover:enabled{
     box-shadow: 0px 0px 10px 2px var(--sort-button-colour);
-    transition: box-shadow 0.5s ease-out;
+    transform: scale(1.05, 1.05);
+    transition: all 0.5s ease-out;
+}
+
+.selected-sorting-button {
+    background-color: var(--arr-button-colour);
+    font-size: 20px;
+    font-weight: 500;
+    height: 40px;
+    color: var(--sort-button-colour);
+    border-color: var(--sort-button-colour);
+    border-style: solid;
+    border-radius: 15px;
+    margin-right: 15px;
+    margin-top: 25px;
+    box-shadow: 0px 0px 10px 2px var(--sort-button-colour);
+    transform: scale(1.05, 1.05);
+    transition: all 0.5s ease-out;
 }
 
 .array-container span{
@@ -172,6 +185,15 @@ p{
 
 .array-bar{
     margin : 0 1px;
+    margin-top: 30px;
     background-color: #A0E7E5;
     transition: height 0.1s, background-color 0s;
+}
+
+button:disabled{
+    background-color: var(--disabled-colour);
+}
+
+button:active{
+    cursor: pointer;
 }
