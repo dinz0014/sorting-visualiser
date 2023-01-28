@@ -1,5 +1,5 @@
-import { Animation, AnimationType } from './types/animationTypes';
-import { ComparisonType } from './types/comparisonTypes';
+import { Animation, AnimationType } from '../types/animationTypes';
+import { ComparisonType } from '../types/comparisonTypes';
 
 /*
 This function peforms a comparison between two numbers and adds corresponding animations into an array of animations.

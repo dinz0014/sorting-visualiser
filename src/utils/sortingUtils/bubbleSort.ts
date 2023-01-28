@@ -1,6 +1,6 @@
 import { compare, swap } from '../animationUtils';
-import { Animation } from '../types/animationTypes';
-import { ComparisonType } from '../types/comparisonTypes';
+import { Animation } from '../../types/animationTypes';
+import { ComparisonType } from '../../types/comparisonTypes';
 
 /*
 Function that takes in an array of numbers to sort using bubble sort.
