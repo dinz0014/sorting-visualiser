@@ -1,6 +1,6 @@
 import { compare, replace } from '../animationUtils';
-import { Animation } from '../types/animationTypes';
-import { ComparisonType } from '../types/comparisonTypes';
+import { Animation } from '../../types/animationTypes';
+import { ComparisonType } from '../../types/comparisonTypes';
 
 /*
 This function performs iterative merge sort on the array of numbers.

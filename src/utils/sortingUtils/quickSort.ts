@@ -1,6 +1,6 @@
-import { Animation } from '../types/animationTypes';
+import { Animation } from '../../types/animationTypes';
 import { compare, swap } from '../animationUtils';
-import { ComparisonType } from '../types/comparisonTypes';
+import { ComparisonType } from '../../types/comparisonTypes';
 
 /*
 This function performs quick sort on an array of numbers.

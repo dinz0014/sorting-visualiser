@@ -1,16 +1,16 @@
 import React from 'react';
-import { background, primary, secondary } from '../colours';
+import { background, primary, secondary } from '../../style/colours';
 import {
     getBubbleSortAnimations,
     getOptimisedBubbleSortAnimations
-} from '../sortingAlgorithms/bubbleSort';
-import { getHeapSortAnimations } from '../sortingAlgorithms/heapSort';
-import { getInsertionSortAnimations } from '../sortingAlgorithms/insertionSort';
-import getIterativeMergeSortAnimations from '../sortingAlgorithms/iterativeMergeSort';
-import { getQuickSortAnimations } from '../sortingAlgorithms/quickSort';
-import getSelectionSortAnimations from '../sortingAlgorithms/selectionSort';
-import { Animation, AnimationType } from '../types/animationTypes';
-import { SortVizProps, SortVizState } from '../types/visualiserModelTypes';
+} from '../../utils/sortingUtils/bubbleSort';
+import { getHeapSortAnimations } from '../../utils/sortingUtils/heapSort';
+import { getInsertionSortAnimations } from '../../utils/sortingUtils/insertionSort';
+import getIterativeMergeSortAnimations from '../../utils/sortingUtils/iterativeMergeSort';
+import { getQuickSortAnimations } from '../../utils/sortingUtils/quickSort';
+import getSelectionSortAnimations from '../../utils/sortingUtils/selectionSort';
+import { Animation, AnimationType } from '../../types/animationTypes';
+import { SortVizProps, SortVizState } from '../../types/visualiserModelTypes';
 import './SortingVisualiser.css';
 
 // Main component class for Sorting Visualiser

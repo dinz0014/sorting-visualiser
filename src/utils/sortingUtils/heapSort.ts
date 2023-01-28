@@ -1,6 +1,6 @@
 import { compare, swap } from '../animationUtils';
-import { ComparisonType } from '../types/comparisonTypes';
-import { Animation } from '../types/animationTypes';
+import { ComparisonType } from '../../types/comparisonTypes';
+import { Animation } from '../../types/animationTypes';
 
 /*
 This function performs heap sort on an array of numbers.

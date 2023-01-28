@@ -1,6 +1,6 @@
 import { compare, swap } from '../animationUtils';
-import { Animation } from '../types/animationTypes';
-import { ComparisonType } from '../types/comparisonTypes';
+import { Animation } from '../../types/animationTypes';
+import { ComparisonType } from '../../types/comparisonTypes';
 
 /*
 Function that takes in the array of numbers to sort and performs Selection Sort.
