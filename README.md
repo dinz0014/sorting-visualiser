@@ -6,9 +6,15 @@ reasonable limits), generate new arrays if they wish to start fresh and undo the
 sorting done to the current array if they wish to compare the execution of
 different algorithms on the same input data.
 
-![](https://user-images.githubusercontent.com/55499117/220277737-b93ca8f8-4546-4206-a992-b2beca38c5a4.PNG)
+Here is what the interface looks like:
 
-# Getting Started with Create React App
+![Sorting Visualiser Interface](https://user-images.githubusercontent.com/55499117/220277737-b93ca8f8-4546-4206-a992-b2beca38c5a4.PNG)
+
+The video below shows a basic usecase of this web app.
+
+![](https://user-images.githubusercontent.com/55499117/220279627-619d571b-fce6-408b-a7b2-5407b9c9e06c.mp4)
+
+# Create React App
 
 This project was bootstrapped with
 [Create React App](https://github.com/facebook/create-react-app).
@@ -62,10 +68,3 @@ You don’t have to ever use `eject`. The curated feature set is suitable for
 small and middle deployments, and you shouldn’t feel obligated to use this
 feature. However we understand that this tool wouldn’t be useful if you couldn’t
 customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the
-[Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
