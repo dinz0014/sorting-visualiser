@@ -6,6 +6,8 @@ reasonable limits), generate new arrays if they wish to start fresh and undo the
 sorting done to the current array if they wish to compare the execution of
 different algorithms on the same input data.
 
+![](https://user-images.githubusercontent.com/55499117/220277737-b93ca8f8-4546-4206-a992-b2beca38c5a4.PNG)
+
 # Getting Started with Create React App
 
 This project was bootstrapped with
