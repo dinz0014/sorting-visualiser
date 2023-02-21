@@ -12,7 +12,7 @@ Here is what the interface looks like:
 
 The video below shows a basic usecase of this web app.
 
-![](https://user-images.githubusercontent.com/55499117/220279627-619d571b-fce6-408b-a7b2-5407b9c9e06c.mp4)
+https://user-images.githubusercontent.com/55499117/220279627-619d571b-fce6-408b-a7b2-5407b9c9e06c.mp4
 
 # Create React App
 
