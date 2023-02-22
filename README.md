@@ -6,13 +6,13 @@ reasonable limits), generate new arrays if they wish to start fresh and undo the
 sorting done to the current array if they wish to compare the execution of
 different algorithms on the same input data.
 
-Here is what the interface looks like:
+The picture below shows what the interface looks like:
 
 ![Sorting Visualiser Interface](https://user-images.githubusercontent.com/55499117/220277737-b93ca8f8-4546-4206-a992-b2beca38c5a4.PNG)
 
-The video below shows a basic usecase of this web app.
+Here is a quick demonstration of the features that the web app provides:
 
-https://user-images.githubusercontent.com/55499117/220279627-619d571b-fce6-408b-a7b2-5407b9c9e06c.mp4
+https://user-images.githubusercontent.com/55499117/220502637-2843d12a-21d8-459b-8cf1-4145fb07fe78.mp4
 
 # Create React App
 
